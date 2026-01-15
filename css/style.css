@@ -88,6 +88,14 @@ section {
     }
 }
 
+
+@media (max-width: 760px){
+    .header.nav-open{
+        background: rgba(26,26,26,0.95);
+        backdrop-filter: blur(10px);
+    }
+}
+
 .header--scrolled{                                                     /* Шапка после скролла */
     background: rgba(243, 156, 18, 1);            
     backdrop-filter: blur(10px);             
@@ -138,14 +146,17 @@ section {
     .header{
         padding: 0 16px;
         height: 64px;
+        background: transparent;
+        box-shadow: none;
     }
 
     .nav-toggle{
         display: block;
     }
 
-    .nav{
-        position: fixed;
+        .nav{
+            display: none;
+            position: fixed;
         top: 64px;
         left: 0;
         right: 0;
@@ -155,19 +166,25 @@ section {
         padding: 16px 0;
     }
 
+    .header.nav-open .nav{
+        display: block;
+    }
+
     .nav__list{
-        display: none;
+        list-style: none;
+        display: flex;
         flex-direction: column;
         gap: 14px;
         align-items: center;
     }
 
-    .header.nav-open .nav__list{
-        display: flex;
-    }
-
     .nav a{
         font-size: 16px;
+    }
+
+    .header.nav-open{
+        background: rgba(26,26,26,0.95);
+        backdrop-filter: blur(10px);
     }
 }
 
