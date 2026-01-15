@@ -85,3 +85,4 @@ if (toggleBtn && headerEl) {
     observer.observe(panel);
   }
 });
+
