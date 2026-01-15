@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>manulife</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="img/manul_logo_head_fixed.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header id="header" class="header">
+            <div class="header__logo">
+                <a href="#intro" aria-label="На главную">
+                <img src="img/manul_logo_head_fixed.png" alt="Котя" class="logo"></a>
+            </div>
+            <nav class="nav" aria-label="Главная навигация">
+                <ul class="nav__list">
+                    <li><a href="#intro">Знакомство</a></li>
+                    <li><a href="#appearance">Внешность</a></li>
+                    <li><a href="#conservation">Обитание</a></li>
+                    <li><a href="#quiz">Тест</a></li>
+                </ul>
+            </nav>  
+    </header>     
+
+    <main>
+        <section id="intro" class="section__intro hero">
+            <video class="hero__video" autoplay muted loop playsinline>
+                <source src="video/video_2026-01-14_14-47-48.mp4" type="video/mp4">
+            </video>
+                <div class="hero__overlay"></div>
+            <div class="hero__content container">
+                <div class="hero__text">
+                    <h1>МАНУЛ</h1>
+                    <p>Самый пушистый и суровый кот планеты</p>
+                    <button class="btn-main" type="button">Узнать больше</button>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <div class="hero-stat__label">Манулов</div>
+                            <div class="hero-stat__value">58000</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat__label">Зоопарков</div>
+                            <div class="hero-stat__value">150</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat__label">Заповедников</div>
+                            <div class="hero-stat__value">12</div>
+                        </div>
+                        <div class="hero-stat">
+                            <div class="hero-stat__label">Программ защиты</div>
+                            <div class="hero-stat__value">5</div>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </section>
+
+        <div class="section-divider" aria-hidden="true">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,40 C240,120 480,0 720,60 C960,120 1200,
+                20 1440,70 L1440,120 L0,120 Z"></path>
+            </svg>
+        </div>
+
+        <section id="appearance" class="section__appearance appearance">
+            <div class="appearance__bg" aria-hidden="true"></div>
+                <div class="appearance__panel">
+                    <div class="container appearance__content">
+                        <h2 class="appearance__title"></h2>
+                        <p class="appearance__text">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        Dolores perspiciatis aperiam beatae. Amet praesentium aspernatur qui. 
+                        Nam cupiditate possimus sint.</p>
+                        <ul class="appearance__list">
+                            <li>Lorem ipsum dolor sit amet.</li>
+                            <li>Lorem ipsum dolor sit amet.</li>
+                            <li>Lorem ipsum dolor sit amet.</li>
+                        </ul>
+                    </div>
+                </div>
+        </section>
+
+        <div class="section-divider" aria-hidden="true">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,40 C240,120 480,0 720,60 C960,120 1200,
+                20 1440,70 L1440,120 L0,120 Z"></path>
+            </svg>
+        </div>
+
+        <section id="conservation" class="section__conservation">
+            <div class="container">
+                <h2 class="conservation__title">Охрана манулов</h2>
+                <p class="conservation__description">Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Quae iusto dolore, aut unde ratione optio necessitatibus quo eaque amet, hic eum debitis laboriosam
+                ullam eius natus officia nisi, odit beatae?</p>
+                    <div class="conservation__items">
+                        <article class="conservation__item">
+                            <h3 class="conservation__item-title">Красная книга</h3>
+                            <p class="conservation__item-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                            Officiis, minima.</p>
+                        </article>
+
+                        <article class="conservation__item">
+                            <h3 class="conservation__item-title">Основные угрозы</h3>
+                            <p class="conservation__item-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                            Officiis, minima.</p>
+                        </article>
+
+                        <article class="conservation__item">
+                            <h3 class="conservation__item-title">Основные угрозы</h3>
+                            <p class="conservation__item-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                            Officiis, minima.</p>
+                        </article>
+                    </div>
+            </div>
+        </section>
+
+        <section id="quiz" class="section__quiz">
+
+        </section>
+    </main>
+
+    <footer>
+        <p>Lorem ipsum dolor sit amet.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
