@@ -1,134 +1,244 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>manulife</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="img/manul_logo_head_fixed.png">
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>manulife</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="icon" type="image/png" href="img/manul_logo_head_fixed.png" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
-    <header id="header" class="header">
-            <div class="header__logo">
-                <a href="#intro" aria-label="На главную">
-                <img src="img/manul_logo_head_fixed.png" alt="Котя" class="logo"></a>
-            </div>
-            <nav class="nav" aria-label="Главная навигация">
-                <ul class="nav__list">
-                    <li><a href="#intro">Знакомство</a></li>
-                    <li><a href="#appearance">Внешность</a></li>
-                    <li><a href="#conservation">Охрана</a></li>
-                    <li><a href="#quiz">Тест</a></li>
-                </ul>
-            </nav>  
-            <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">☰</button>
-    </header>     
+  <header class="header" id="header">
+    <a class="header__logo" href="#intro" aria-label="На главную">
+      <img class="header__logo-img" src="img/manul_logo_head_fixed.png" alt="manulife" />
+    </a>
 
-    <main>
-        <section id="intro" class="section__intro hero">
-            <video class="hero__video" autoplay muted loop playsinline>
-                <source src="video/video_2026-01-14_14-47-48.mp4" type="video/mp4">
-            </video>
-                <div class="hero__overlay"></div>
-            <div class="hero__content container">
-                <div class="hero__text">
-                    <h1>МАНУЛ</h1>
-                    <p>Самый пушистый и суровый кот планеты</p>
-                    <button class="btn-main" type="button">Узнать больше</button>
-                    <div class="hero-stats">
-                        <div class="hero-stat">
-                            <div class="hero-stat__label">Манулов</div>
-                            <div class="hero-stat__value">58000</div>
-                        </div>
-                        <div class="hero-stat">
-                            <div class="hero-stat__label">Зоопарков</div>
-                            <div class="hero-stat__value">150</div>
-                        </div>
-                        <div class="hero-stat">
-                            <div class="hero-stat__label">Заповедников</div>
-                            <div class="hero-stat__value">12</div>
-                        </div>
-                        <div class="hero-stat">
-                            <div class="hero-stat__label">Программ защиты</div>
-                            <div class="hero-stat__value">5</div>
-                        </div>
-                    </div>
-                </div>    
-            </div>
-        </section>
+    <nav class="nav" aria-label="Главная навигация">
+      <ul class="nav__list">
+        <li class="nav__item"><a class="nav__link" href="#intro">Знакомство</a></li>
+        <li class="nav__item"><a class="nav__link" href="#appearance">Внешность</a></li>
+        <li class="nav__item"><a class="nav__link" href="#conservation">Охрана</a></li>
+      </ul>
+    </nav>
 
-        <div class="section-divider" aria-hidden="true">
-            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-                <path d="M0,40 C240,120 480,0 720,60 C960,120 1200,
-                20 1440,70 L1440,120 L0,120 Z"></path>
-            </svg>
+    <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">☰</button>
+  </header>
+
+  <main>
+
+    <section class="hero" id="intro">
+      <video class="hero__video" autoplay muted loop playsinline>
+        <source src="video/video_2026-01-14_14-47-48.mp4" type="video/mp4" />
+      </video>
+
+      <div class="hero__overlay"></div>
+
+      <div class="hero__content container">
+        <div class="hero__text">
+          <h1 class="hero__title">МАНУЛ</h1>
+          <p class="hero__subtitle">Самый пушистый и суровый кот планеты</p>
+
+          <a class="btn-main" href="article.html">Узнать больше</a>
+
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="hero-stat__label">Манулов</div>
+              <div class="hero-stat__value">58000</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat__label">Зоопарков</div>
+              <div class="hero-stat__value">150</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat__label">Заповедников</div>
+              <div class="hero-stat__value">12</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat__label">Программ защиты</div>
+              <div class="hero-stat__value">5</div>
+            </div>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <section id="appearance" class="section__appearance appearance">
-            <div class="appearance__bg" aria-hidden="true"></div>
-                <div class="appearance__panel">
-                    <div class="container appearance__content">
-                        <h2 class="appearance__title"></h2>
-                        <p class="appearance__text">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                        Dolores perspiciatis aperiam beatae. Amet praesentium aspernatur qui. 
-                        Nam cupiditate possimus sint.</p>
-                        <ul class="appearance__list">
-                            <li>Lorem ipsum dolor sit amet.</li>
-                            <li>Lorem ipsum dolor sit amet.</li>
-                            <li>Lorem ipsum dolor sit amet.</li>
-                        </ul>
-                    </div>
-                </div>
-        </section>
+    <div class="wave-separator" aria-hidden="true">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+    <path
+      d="M0,48
+         C180,96 360,0 540,48
+         C720,96 900,24 1080,48
+         C1260,72 1440,48 1440,48
+         L1440,120 L0,120 Z"
+    />
+  </svg>
+</div>
 
-        <div class="section-divider" aria-hidden="true">
-            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-                <path d="M0,40 C240,120 480,0 720,60 C960,120 1200,
-                20 1440,70 L1440,120 L0,120 Z"></path>
-            </svg>
+    <section class="appearance" id="appearance">
+      <div class="appearance__bg" aria-hidden="true"></div>
+
+      <div class="appearance__panel">
+        <div class="appearance__content container">
+          <h2 class="appearance__title">Несколько фактов</h2>
+
+          <ul class="appearance__list">
+            <li>Древний вид: Манул — один из самых древних и малоизученных диких котов планеты. Его внешность почти не менялась тысячелетиями.</li>
+            <li>Густой мех: Обладает исключительно густым и длинным мехом для защиты от холода.</li>
+            <li>Суровый ареал: Обитает в экстремальных условиях — холодных степях, полупустынях и высокогорьях.</li>
+            <li>Одиночный образ жизни: Ведёт скрытный и уединённый образ жизни, встречаясь с сородичами только в сезон размножения.</li>
+            <li>Уникальный взгляд: Имеет необычные круглые зрачки, которые не сужаются в щёлочки, и характерное «суровое» выражение морды.</li>
+            <li>Тактика засады: Не приспособлен к быстрому бегу, предпочитает охотиться из засады или скрываться от опасности.</li>
+          </ul>
         </div>
+      </div>
+    </section>
 
-        <section id="conservation" class="section__conservation">
-            <div class="container">
-                <h2 class="conservation__title">Охрана манулов</h2>
-                <p class="conservation__description">Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Quae iusto dolore, aut unde ratione optio necessitatibus quo eaque amet, hic eum debitis laboriosam
-                ullam eius natus officia nisi, odit beatae?</p>
-                    <div class="conservation__items">
-                        <article class="conservation__item">
-                            <h3 class="conservation__item-title">Красная книга</h3>
-                            <p class="conservation__item-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                            Officiis, minima.</p>
-                        </article>
+    <div class="wave-separator" aria-hidden="true">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+    <path
+      d="M0,48
+         C180,96 360,0 540,48
+         C720,96 900,24 1080,48
+         C1260,72 1440,48 1440,48
+         L1440,120 L0,120 Z"
+    />
+  </svg>
+</div>
 
-                        <article class="conservation__item">
-                            <h3 class="conservation__item-title">Основные угрозы</h3>
-                            <p class="conservation__item-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                            Officiis, minima.</p>
-                        </article>
+    <section class="conservation" id="conservation">
+      <div class="container">
+        <h2 class="conservation__title">Охрана манулов</h2>
 
-                        <article class="conservation__item">
-                            <h3 class="conservation__item-title">Основные угрозы</h3>
-                            <p class="conservation__item-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                            Officiis, minima.</p>
-                        </article>
-                    </div>
-            </div>
-        </section>
+        <p class="conservation__description">
+          Манул занесён в Красную книгу. Основные угрозы связаны с деятельностью человека
+          и сокращением естественной среды обитания.
+        </p>
 
-        <section id="quiz" class="section__quiz">
+<div class="conservation__items">
+  <article class="conservation__item">
+    <h3 class="conservation__item-title">Красная книга</h3>
 
-        </section>
-    </main>
+    <ul class="conservation__list">
+      <li>Манул охраняется на международном уровне и внесён в списки охраняемых видов во многих странах</li>
+      <li>Упоминается в Приложении II Конвенции CITES</li>
+      <li>Любые торговые операции с манулами строго регулируются</li>
+      <li>Под охраной с 1975 года</li>
+      <li>Охраняется в странах:
+      Монголия, Россия, Китай, Казахстан </li>
+    </ul>
+  </article>
 
-    <footer>
-        <p>Lorem ipsum dolor sit amet.</p>
-    </footer>
+  <article class="conservation__item">
+    <h3 class="conservation__item-title">Основные угрозы</h3>
 
-    <script src="js/main.js"></script>
+    <ul class="conservation__list">
+      <li>Сокращение и фрагментация среды обитания из-за сельского хозяйства, добычи полезных ископаемых и строительства</li>
+      <li>Браконьерство ради меха и незаконный отлов для продажи</li>
+      <li>Случайная гибель в капканах, расставленных на других животных</li>
+      <li>Снижение кормовой базы из-за уменьшения численности грызунов</li>
+      <li>Климатические изменения, влияющие на высокогорные и степные экосистемы</li>
+    </ul>
+  </article>
+
+  <article class="conservation__item">
+    <h3 class="conservation__item-title">Меры защиты</h3>
+
+    <ul class="conservation__list">
+      <li>Программы разведения в зоопарках и специализированных центрах с последующей реинтродукцией</li>
+      <li>Охрана в заповедниках и национальных парках, где создаются безопасные условия для жизни и размножения</li>
+      <li>Научные исследования и мониторинг популяций для разработки эффективных стратегий охраны</li>
+      <li>Экопросвещение и работа с местным населением для снижения конфликтов и браконьерства</li>
+    </ul>
+  </article>
+</div>
+      </div>
+    </section>
+
+    <div class="wave-separator" aria-hidden="true">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+    <path
+      d="M0,48
+         C180,96 360,0 540,48
+         C720,96 900,24 1080,48
+         C1260,72 1440,48 1440,48
+         L1440,120 L0,120 Z"
+    />
+  </svg>
+</div>
+
+    <section class="photo-strip" aria-label="Галерея манула">
+      <div class="photo-strip__inner container">
+        <h3 class="photo-strip__title">Манул в кадре</h3>
+      </div>
+
+      <div class="photo-strip__track-wrap">
+        <div class="photo-strip__track">
+          <div class="photo-strip__item"><img src="img/1cmnVIGuvFg1.png" alt="Манул 1" /></div>
+          <div class="photo-strip__item"><img src="img/8a74c4c7c57730019a2184ed843013ab.png" alt="Манул 1" /></div>
+          <div class="photo-strip__item"><img src="img/Pallas-cat1.png" alt="Манул 1" /></div>
+          <div class="photo-strip__item"><img src="img/3000x1999_0xHt0bSIn7_04965493748604775661.png" alt="Манул 1" /></div>
+          <div class="photo-strip__item"><img src="img/1116925942_143_0_893_750_1920x0_80_0_0_05f5cf88089c5b566c7a8089990c7e9a1.png" alt="Манул 1" /></div>
+          <div class="photo-strip__item"><img src="img/1950980622_0_490_987_1045_1920x0_80_0_0_f7eaf00341f182a35d5f126194dea9921.png" alt="Манул 1" /></div>
+          <div class="photo-strip__item"><img src="img/1647395163247266295.png" alt="Манул 1" /></div>
+          <div class="photo-strip__item"><img src="img/a7902cb88ed69ee325ae368bdc8b883c.png" alt="Манул 1" /></div>
+          <div class="photo-strip__item"><img src="img/f698bd2fbaa97f476c22e7f4339eed731.png" alt="Манул 1" /></div>
+          <div class="photo-strip__item"><img src="img/file-4-1-scaled1.png" alt="Манул 1" /></div>
+          <div class="photo-strip__item"><img src="img/is1.png" alt="Манул 1" /></div>
+          <div class="photo-strip__item"><img src="img/beautiful-manul-cat-hidden-fallen-tree.jpg" alt="Манул 1" /></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <footer class="footer" id="footer">
+  <div class="container footer__inner">
+
+    <div class="footer__col">
+      <div class="footer__brand">
+        <img class="footer__logo" src="img/manul_logo_head_fixed.png" alt="manulife" />
+        <div>
+          <strong class="footer__name">manulife</strong>
+          <span class="footer__tag">Про манула коротко и красиво</span>
+        </div>
+      </div>
+
+      <p class="footer__desc">
+        Учебный проект о самом пушистом и суровом коте планеты.
+      </p>
+    </div>
+
+    <div class="footer__col">
+      <h4 class="footer__title">Разделы</h4>
+      <ul class="footer__links">
+        <li><a href="#intro">Знакомство</a></li>
+        <li><a href="#appearance">Внешность</a></li>
+        <li><a href="#conservation">Охрана</a></li>
+        <li><a href="#quiz">Тест</a></li>
+      </ul>
+
+      <button class="footer__top" id="backToTop" type="button">↑ Наверх</button>
+    </div>
+
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+      <small>© <span id="yearNow"></span> manulife</small>
+      <small>Учебный проект</small>
+    </div>
+  </div>
+</footer>
+
+  <script src="js/main.js"></script>
 </body>
 </html>
