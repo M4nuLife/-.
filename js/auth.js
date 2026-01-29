@@ -1,3 +1,4 @@
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import {
   getAuth,
@@ -6,7 +7,8 @@ import {
   sendPasswordResetEmail,
   onAuthStateChanged,
   signOut,
-  updateProfile
+  updateProfile,
+  sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
 /* Firebase config */
@@ -24,45 +26,30 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 document.addEventListener("DOMContentLoaded", () => {
-  /* ===== Header controls (index.html) ===== */
-  const openBtn = document.getElementById("openAuth");   // "Аккаунт"
-  const logoutBtn = document.getElementById("logoutBtn"); // "Выйти" в шапке
-  const authNick = document.getElementById("authNick");   // ник в шапке
+  /* Header controls index.html*/
+  const openBtn = document.getElementById("openAuth"); 
+  const logoutBtn = document.getElementById("logoutBtn"); 
+  const authNick = document.getElementById("authNick"); 
 
-  /* ===== Modal (index.html) ===== */
+  /* Modal index.html */
   const modal = document.getElementById("authModal");
   const modalCloseEls = modal ? modal.querySelectorAll("[data-close]") : [];
-
   const modalTabs = modal ? Array.from(modal.querySelectorAll(".auth-modal__tab")) : [];
   const modalPanes = modal ? Array.from(modal.querySelectorAll(".auth-modal__form")) : [];
 
-  /* ===== Forms (modal or auth.html page) ===== */
+  /* Forms auth.html */
   const regForm =
-  document.getElementById("registerFormModal") ||
-  document.getElementById("registerForm");
+    document.getElementById("registerFormModal") || document.getElementById("registerForm");
 
-const logForm =
-  document.getElementById("loginFormModal") ||
-  document.getElementById("loginForm");
+  const logForm = document.getElementById("loginFormModal") || document.getElementById("loginForm");
 
-const regMsg =
-  document.getElementById("regMsgModal") ||
-  document.getElementById("regMsg");
+  const regMsg = document.getElementById("regMsgModal") || document.getElementById("regMsg");
+  const logMsg = document.getElementById("logMsgModal") || document.getElementById("logMsg");
 
-const logMsg =
-  document.getElementById("logMsgModal") ||
-  document.getElementById("logMsg");
+  const resetBtn =
+    document.getElementById("resetBtnModal") || document.getElementById("resetBtn");
 
-const resetBtn =
-  document.getElementById("resetBtnModal") ||
-  document.getElementById("resetBtn");
-
-  // Optional status block (if you keep it somewhere)
-  const authStatus = document.getElementById("authStatus");
-  const userEmail = document.getElementById("userEmail");
-  const modalLogoutBtn = document.getElementById("logoutBtnModal") || document.getElementById("logoutBtn");
-
-  /* ===== Helpers ===== */
+  /* Helpers */
   const setMsg = (node, text) => {
     if (node) node.textContent = text || "";
   };
@@ -88,22 +75,21 @@ const resetBtn =
     setMsg(logMsg, "");
   };
 
-  /* ===== Wire modal open/close ===== */
-  openBtn?.addEventListener("click", () => {
-    // если уже вошёл — можно не открывать модалку, но оставим открытие (удобно для "смены аккаунта")
-    openModal();
-  });
+  const getEl = (idModal, idPage) =>
+    document.getElementById(idModal) || document.getElementById(idPage);
 
+  /* Wire modal open/close */
+  openBtn?.addEventListener("click", openModal);
   modalCloseEls.forEach((el) => el.addEventListener("click", closeModal));
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeModal();
   });
 
-  /* ===== Tabs ===== */
+  /* Tabs */
   modalTabs.forEach((t) => t.addEventListener("click", () => setTab(t.dataset.tab)));
 
-  /* ===== Logout (header + optional modal) ===== */
+  /* Logout */
   const doLogout = async () => {
     try {
       await signOut(auth);
@@ -112,26 +98,16 @@ const resetBtn =
       console.warn("[auth] signOut error:", e);
     }
   };
-
   logoutBtn?.addEventListener("click", doLogout);
 
-  // если у тебя есть отдельная кнопка выхода в модалке — она тоже отработает
-  // (если ты используешь id="logoutBtn" внутри модалки — это конфликт id, лучше не делать)
-  // modalLogoutBtn?.addEventListener("click", doLogout);
-
-  /* ===== Register ===== */
+  /* Register (with email verification + message, no redirect) */
   regForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
     setMsg(regMsg, "");
 
-    const email =
-  (document.getElementById("regEmailModal") || document.getElementById("regEmail"))?.value?.trim();
-
-const pass =
-  (document.getElementById("regPassModal") || document.getElementById("regPass"))?.value || "";
-
-const nickRaw =
-  (document.getElementById("regNickModal") || document.getElementById("regNick"))?.value?.trim();
+    const email = getEl("regEmailModal", "regEmail")?.value?.trim() || "";
+    const pass = getEl("regPassModal", "regPass")?.value || "";
+    const nickRaw = getEl("regNickModal", "regNick")?.value?.trim() || "";
 
     if (!email || !pass) {
       setMsg(regMsg, "Заполните почту и пароль.");
@@ -145,29 +121,36 @@ const nickRaw =
     const fallbackNick = nickRaw && nickRaw.length >= 2 ? nickRaw : email.split("@")[0];
 
     try {
+
       const cred = await createUserWithEmailAndPassword(auth, email, pass);
 
-      // сохраняем никнейм в профиль Firebase
       await updateProfile(cred.user, { displayName: fallbackNick });
 
-      setMsg(regMsg, "Аккаунт создан! Вы вошли.");
-      closeModal();
+      await sendEmailVerification(cred.user);
+
+      await signOut(auth);
+
+      setMsg(
+        regMsg,
+        "✅ Письмо для подтверждения отправлено! Откройте почту, перейдите по ссылке в письме, затем войдите через вкладку «Вход»."
+      );
     } catch (err) {
-      setMsg(regMsg, err?.message || "Ошибка регистрации");
+      const code = err?.code || "";
+      if (code === "auth/email-already-in-use") setMsg(regMsg, "Эта почта уже зарегистрирована.");
+      else if (code === "auth/invalid-email") setMsg(regMsg, "Некорректная почта.");
+      else if (code === "auth/weak-password")
+        setMsg(regMsg, "Слишком простой пароль (минимум 6 символов).");
+      else setMsg(regMsg, err?.message || "Ошибка регистрации");
     }
   });
 
-  /* ===== Login ===== */
+  /*Login (block if email not verified)*/
   logForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
     setMsg(logMsg, "");
 
-  const email =
-  (document.getElementById("logEmailModal") || document.getElementById("logEmail"))?.value?.trim();
-
-  const pass =
-  (document.getElementById("logPassModal") || document.getElementById("logPass"))?.value || "";
-
+    const email = getEl("logEmailModal", "logEmail")?.value?.trim() || "";
+    const pass = getEl("logPassModal", "logPass")?.value || "";
 
     if (!email || !pass) {
       setMsg(logMsg, "Заполните почту и пароль.");
@@ -175,19 +158,37 @@ const nickRaw =
     }
 
     try {
-      await signInWithEmailAndPassword(auth, email, pass);
+      const cred = await signInWithEmailAndPassword(auth, email, pass);
+
+      await cred.user.reload();
+
+      if (!cred.user.emailVerified) {
+        setMsg(
+          logMsg,
+          "Почта не подтверждена. Откройте письмо и подтвердите email. Затем попробуйте войти снова."
+        );
+        await signOut(auth);
+        return;
+      }
+
       setMsg(logMsg, "Успешный вход!");
       closeModal();
     } catch (err) {
-      setMsg(logMsg, err?.message || "Ошибка входа");
+      const code = err?.code || "";
+      if (code === "auth/invalid-credential" || code === "auth/wrong-password")
+        setMsg(logMsg, "Неверная почта или пароль.");
+      else if (code === "auth/user-not-found")
+        setMsg(logMsg, "Пользователь не найден.");
+      else if (code === "auth/invalid-email")
+        setMsg(logMsg, "Некорректная почта.");
+      else setMsg(logMsg, err?.message || "Ошибка входа");
     }
   });
 
-  /* ===== Reset password ===== */
+  /*Reset password */
   resetBtn?.addEventListener("click", async () => {
     setMsg(logMsg, "");
-    const email =
-  (document.getElementById("logEmailModal") || document.getElementById("logEmail"))?.value?.trim();
+    const email = getEl("logEmailModal", "logEmail")?.value?.trim() || "";
 
     if (!email) {
       setMsg(logMsg, "Введите почту и нажмите ещё раз.");
@@ -198,14 +199,26 @@ const nickRaw =
       await sendPasswordResetEmail(auth, email);
       setMsg(logMsg, "Письмо для сброса пароля отправлено.");
     } catch (err) {
-      setMsg(logMsg, err?.message || "Не удалось отправить письмо");
+      const code = err?.code || "";
+      if (code === "auth/invalid-email") setMsg(logMsg, "Некорректная почта.");
+      else if (code === "auth/user-not-found") setMsg(logMsg, "Пользователь не найден.");
+      else setMsg(logMsg, err?.message || "Не удалось отправить письмо");
     }
   });
 
-  /* ===== Auth state -> UI ===== */
-  onAuthStateChanged(auth, (user) => {
+  
+
+
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
-      // Header
+      try {
+        await user.reload();
+      } catch (_) {}
+    }
+
+    const isVerified = !!user && (user.emailVerified || !user.email);
+
+    if (user && isVerified) {
       if (openBtn) openBtn.hidden = true;
       if (logoutBtn) logoutBtn.hidden = false;
 
@@ -213,17 +226,7 @@ const nickRaw =
         authNick.hidden = false;
         authNick.textContent = user.displayName || user.email || "Пользователь";
       }
-
-      // Optional status block
-      if (authStatus && userEmail && regForm && logForm) {
-        authStatus.hidden = false;
-        userEmail.textContent = user.email || "";
-        regForm.hidden = true;
-        logForm.hidden = true;
-        modalTabs.forEach((t) => (t.disabled = true));
-      }
     } else {
-      // Header
       if (openBtn) openBtn.hidden = false;
       if (logoutBtn) logoutBtn.hidden = true;
 
@@ -231,20 +234,11 @@ const nickRaw =
         authNick.hidden = true;
         authNick.textContent = "";
       }
-
-      // Optional status block
-      if (authStatus && regForm && logForm) {
-        authStatus.hidden = true;
-        regForm.hidden = false;
-        logForm.hidden = false;
-        modalTabs.forEach((t) => (t.disabled = false));
-        setTab("register");
-      } else {
-        // если статус-блока нет — просто по умолчанию таб регистрации
-        setTab("register");
-      }
     }
   });
 
   setTab("register");
 });
+
+
+
