@@ -1,4 +1,4 @@
-/* ===== Base ===== */
+/* Base */
 
 *,
 *::before,
@@ -115,7 +115,7 @@ section {
   padding: 0 20px;
 }
 
-/* ===== Buttons ===== */
+/* Buttons */
 
 .btn-main {
   display: inline-flex;
@@ -157,7 +157,7 @@ section {
   border-color: rgba(243, 156, 18, 0.8);
 }
 
-/* ===== Header / Nav ===== */
+/*  Header/nav  */
 
 .header {
   height: var(--header-h);
@@ -359,7 +359,7 @@ section {
   }
 }
 
-/* ===== Hero ===== */
+/*  Hero  */
 
 .hero {
   position: relative;
@@ -474,7 +474,7 @@ section {
   }
 }
 
-/* ===== Appearance ===== */
+/*  Appearance  */
 
 .appearance {
   position: relative;
@@ -581,7 +581,7 @@ section {
   }
 }
 
-/* ===== Conservation ===== */
+/*  Conservation  */
 
 .conservation {
   padding: 110px 20px 120px;
@@ -711,7 +711,7 @@ section {
   }
 }
 
-/* ===== Meaning ===== */
+/*  Meaning  */
 
 .meaning {
   position: relative;
@@ -767,7 +767,7 @@ section {
   }
 }
 
-/* ===== Photo strip ===== */
+/*  Photo strip  */
 
 .photo-strip {
   padding: 60px 0 70px;
@@ -894,7 +894,7 @@ section {
   }
 }
 
-/* ===== Quiz ===== */
+/*  Quiz  */
 
 .quiz-section {
   background: #111;
@@ -1197,7 +1197,7 @@ section {
   }
 }
 
-/* ===== Article ===== */
+/*  Article  */
 
 .article {
   min-height: 100vh;
@@ -1299,7 +1299,7 @@ section {
   opacity: 0.95;
 }
 
-/* ===== Auth modal ===== */
+/* Auth modal  */
 
 .auth-modal {
   position: fixed;
@@ -1528,7 +1528,6 @@ body.is-modal-open {
   transform: translateY(0);
 }
 
-/* на оранжевом фоне шапки делаем кнопку “темнее” для читаемости */
 .header--scrolled .auth-actions .auth-btn {
   background: rgba(0, 0, 0, 0.18);
   border-color: rgba(0, 0, 0, 0.24);
@@ -1539,7 +1538,6 @@ body.is-modal-open {
   border-color: rgba(255, 255, 255, 0.22);
 }
 
-/* убираем синюю рамку браузера, оставляя нормальный фокус */
 .auth-actions .auth-btn:focus {
   outline: none;
 }
@@ -1551,22 +1549,8 @@ body.is-modal-open {
 
 
 
+/*  Map page styles ====== */
 
-
-
-
-
-
-
-
-
-
-
-
-
-/* ============================= */
-/* ===== Map page styles ====== */
-/* ============================= */
 
 .map-page {
   min-height: 100vh;
@@ -1639,8 +1623,6 @@ body.is-modal-open {
   border-bottom: 1px solid rgba(243, 156, 18, 0.18);
 }
 
-/* ===== Leaflet overrides (под твой стиль) ===== */
-
 .leaflet-container {
   background: #111;
   font-family: "Inter", sans-serif;
@@ -1669,7 +1651,7 @@ body.is-modal-open {
   background: rgba(0, 0, 0, 0.85);
 }
 
-/* Текст внутри popup */
+
 .leaflet-popup-content {
   margin: 12px 14px;
   line-height: 1.5;
@@ -1679,14 +1661,40 @@ body.is-modal-open {
   color: var(--accent);
 }
 
-/* Мобильная адаптация */
-@media (max-width: 768px) {
-  #map {
-    height: calc(100vh - var(--header-h) - 260px);
+/* Мобильная адаптация футер */
+@media (max-width: 600px) {
+  .footer .container {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
-  .map-panel {
-    gap: 8px;
+  
+  .footer__inner {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 28px 0;
+  }
+
+  .footer__desc {
+    margin-top: 8px;
+  }
+
+  .footer__links {
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .footer__top {
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    margin: 14px 0 0 0 !important;
+
+    width: 100%;
+    justify-self: stretch;
+    display: inline-flex;
+    justify-content: center;
   }
 }
 
