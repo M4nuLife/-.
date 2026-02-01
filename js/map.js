@@ -62,11 +62,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   const norm = (s) =>
     String(s || '').toLowerCase().replace(/\s+/g, ' ').trim();
 
-  const loadJSON = async (path) => {
-    const res = await fetch(new URL(path, location.href), { cache: 'no-cache' });
-    if (!res.ok) throw new Error(res.status);
-    return res.json();
-  };
+async function loadJSON(relPath) {
+  const res = await fetch(relPath, { cache: "no-cache" });
+
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status} for ${relPath}`);
+  }
+
+  return await res.json();
+}
 
   /* ===== Data ===== */
 
