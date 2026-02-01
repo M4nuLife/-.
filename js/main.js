@@ -1,62 +1,64 @@
 (() => {
   'use strict';
 
+  /* ===== Utils ===== */
+
   const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
   const HEADER_SCROLL_Y = 20;
   const SCROLL_EXTRA_OFFSET = 20;
 
+  /* ===== Header / Nav ===== */
+
   function initHeaderNav() {
     const header = $('#header');
-    const navToggle = $('.nav-toggle');
+    const toggle = $('.nav-toggle');
     const nav = $('.nav');
+    if (!header) return null;
 
-    if (!header) return;
-
-    const setHeaderState = () => {
+    const setScrolled = () => {
       header.classList.toggle('header--scrolled', window.scrollY > HEADER_SCROLL_Y);
     };
 
-    const setNavOpen = (open) => {
+    const setOpen = (open) => {
       header.classList.toggle('nav-open', open);
-      navToggle?.setAttribute('aria-expanded', String(open));
+      toggle?.setAttribute('aria-expanded', String(open));
     };
 
-    const closeNav = () => setNavOpen(false);
+    window.addEventListener('scroll', setScrolled, { passive: true });
+    setScrolled();
 
-    window.addEventListener('scroll', setHeaderState, { passive: true });
-    setHeaderState();
-
-    navToggle?.addEventListener('click', () => {
-      const isOpen = header.classList.toggle('nav-open');
-      navToggle.setAttribute('aria-expanded', String(isOpen));
+    toggle?.addEventListener('click', () => {
+      setOpen(!header.classList.contains('nav-open'));
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeNav();
+      if (e.key === 'Escape') setOpen(false);
     });
 
     document.addEventListener('click', (e) => {
       if (!header.classList.contains('nav-open')) return;
       if (e.target.closest('.nav-toggle')) return;
-      if (nav && nav.contains(e.target)) return;
-      closeNav();
+      if (nav?.contains(e.target)) return;
+      setOpen(false);
     });
 
-    return { header, closeNav };
+    return { header, close: () => setOpen(false) };
   }
 
-  function initSmoothScroll(headerApi) {
-    const header = headerApi?.header;
+  /* ===== Smooth Scroll ===== */
 
-    const getOffset = () => (header ? header.offsetHeight + SCROLL_EXTRA_OFFSET : 90);
+  function initSmoothScroll(api) {
+    const header = api?.header;
+
+    const offset = () =>
+      (header?.offsetHeight || 70) + SCROLL_EXTRA_OFFSET;
 
     const scrollToId = (id) => {
-      const target = $(id);
-      if (!target) return;
-
-      const top = target.getBoundingClientRect().top + window.pageYOffset - getOffset();
+      const el = $(id);
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.pageYOffset - offset();
       window.scrollTo({ top, behavior: 'smooth' });
     };
 
@@ -65,16 +67,19 @@
       if (!link) return;
 
       const id = link.getAttribute('href');
-      if (!id || id === '#') return;
-      if (!$(id)) return;
+      if (!id || id === '#' || !$(id)) return;
 
       e.preventDefault();
       scrollToId(id);
-      headerApi?.closeNav?.();
+      api?.close();
     });
 
-    $('.btn-main')?.addEventListener('click', () => scrollToId('#appearance'));
+    $('.btn-main')?.addEventListener('click', () => {
+      scrollToId('#appearance');
+    });
   }
+
+  /* ===== Reveal on Scroll ===== */
 
   function initRevealOnScroll() {
     const sections = $$('main > section');
@@ -84,8 +89,8 @@
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          entry.target.classList.toggle('is-inview', entry.isIntersecting);
+        entries.forEach((e) => {
+          e.target.classList.toggle('is-inview', e.isIntersecting);
         });
       },
       { threshold: 0.12 }
@@ -94,310 +99,284 @@
     sections.forEach((s) => observer.observe(s));
   }
 
+  /* ===== Appearance Panel ===== */
+
   function initAppearancePanel() {
     const panel = $('.appearance__panel');
     if (!panel) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => panel.classList.toggle('is-visible', entry.isIntersecting),
+      ([e]) => panel.classList.toggle('is-visible', e.isIntersecting),
       { threshold: 0.35 }
     );
 
     observer.observe(panel);
   }
 
-  function initFooter() {
-    const yearNode = $('#yearNow');
-    if (yearNode) yearNode.textContent = String(new Date().getFullYear());
+  /* ===== Footer ===== */
 
-    $('#backToTop')?.addEventListener('click', () => {
+  function initFooter() {
+  const yearNode = document.getElementById('yearNow');
+  if (yearNode) yearNode.textContent = String(new Date().getFullYear());
+
+  const topButtons = document.querySelectorAll('#backToTop, .footer__top');
+  topButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-  }
+  });
+}
+
+  /* ===== Quiz ===== */
 
   function initQuiz() {
-    const quizData = [
-      {
-        q: 'Чем уникальна шерсть манула по сравнению с другими кошачьими?',
-        a: [
-          'Она самая короткая и гладкая',
-          'Она самая густая',
-          'Она может менять цвет в зависимости от сезона',
-          'Она абсолютно водонепроницаема'
-        ],
-        correct: 1
-      },
-      {
-        q: 'Где находится главный в России научный центр по изучению и охране манула?',
-        a: [
-          'Национальный парк «Лосиный остров» (Москва)',
-          'Заповедник «Кивач» (Карелия)',
-          'Государственный природный заповедник «Даурский» (Забайкальский край)',
-          'Приокско-Террасный заповедник (Московская область)'
-        ],
-        correct: 2
-      },
-      {
-        q: 'Какое животное составляет основу рациона манула (до 90%)?',
-        a: [
-          'Заяц-беляк',
-          'Пищуха',
-          'Суслик',
-          'Мышь-полевка'
-        ],
-        correct: 1
-      },
-      {
-        q: 'Какова ключевая природная угроза для манула, связанная с погодными условиями?',
-        a: [
-          'Сильная летняя жара',
-          'Многоснежные зимы и гололед',
-          'Продолжительные весенние дожди',
-          'Ураганные ветра'
-        ],
-        correct: 1
-      },
-      {
-        q: 'Что является самой значительной антропогенной угрозой для жизни манула?',
-        a: [
-          'Прямая охота ради меха',
-          'Отлов для зоопарков',
-          'Гибель в браконьерских проволочных петлях',
-          'Конфликты с домашним скотом'
-        ],
-        correct: 2
-      },
-      {
-        q: 'Какая особенность поведения делает манула непригодным для жизни как домашнего питомца?',
-        a: [
-          'Он слишком громко мяукает',
-          'Он требует особого диетического питания',
-          'Он абсолютно дикий и не приручается даже в неволе',
-          'Он ведет исключительно ночной образ жизни'
-        ],
-        correct: 2
-      },
-      {
-        q: 'Какой эволюционный признак отличает глаза манула от глаз большинства кошек?',
-        a: [
-          'Они светятся красным светом',
-          'У них прямоугольные зрачки',
-          'У них круглые зрачки',
-          'Они полностью черного цвета'
-        ],
-        correct: 2
-      },
-      {
-        q: 'Где в России НЕТ устойчивой популяции манула?',
-        a: [
-          'Республика Тыва',
-          'Забайкальский край',
-          'Приморский край (тайга и смешанные леса)',
-          'Республика Алтай'
-        ],
-        correct: 2
-      }
-    ];
+  const quizData = [
+    {
+      q: 'Чем уникальна шерсть манула по сравнению с другими кошачьими?',
+      a: [
+        'Она самая короткая и гладкая',
+        'Она самая густая',
+        'Она может менять цвет в зависимости от сезона',
+        'Она абсолютно водонепроницаема'
+      ],
+      correct: 1
+    },
+    {
+      q: 'Где находится главный в России научный центр по изучению и охране манула?',
+      a: [
+        'Национальный парк «Лосиный остров» (Москва)',
+        'Заповедник «Кивач» (Карелия)',
+        'Государственный природный заповедник «Даурский» (Забайкальский край)',
+        'Приокско-Террасный заповедник (Московская область)'
+      ],
+      correct: 2
+    },
+    {
+      q: 'Какое животное составляет основу рациона манула (до 90%)?',
+      a: ['Заяц-беляк', 'Пищуха', 'Суслик', 'Мышь-полевка'],
+      correct: 1
+    },
+    {
+      q: 'Какова ключевая природная угроза для манула, связанная с погодными условиями?',
+      a: [
+        'Сильная летняя жара',
+        'Многоснежные зимы и гололед',
+        'Продолжительные весенние дожди',
+        'Ураганные ветра'
+      ],
+      correct: 1
+    },
+    {
+      q: 'Что является самой значительной антропогенной угрозой для жизни манула?',
+      a: [
+        'Прямая охота ради меха',
+        'Отлов для зоопарков',
+        'Гибель в браконьерских проволочных петлях',
+        'Конфликты с домашним скотом'
+      ],
+      correct: 2
+    },
+    {
+      q: 'Какая особенность поведения делает манула непригодным для жизни как домашнего питомца?',
+      a: [
+        'Он слишком громко мяукает',
+        'Он требует особого диетического питания',
+        'Он абсолютно дикий и не приручается даже в неволе',
+        'Он ведет исключительно ночной образ жизни'
+      ],
+      correct: 2
+    },
+    {
+      q: 'Какой эволюционный признак отличает глаза манула от глаз большинства кошек?',
+      a: [
+        'Они светятся красным светом',
+        'У них прямоугольные зрачки',
+        'У них круглые зрачки',
+        'Они полностью черного цвета'
+      ],
+      correct: 2
+    },
+    {
+      q: 'Где в России НЕТ устойчивой популяции манула?',
+      a: [
+        'Республика Тыва',
+        'Забайкальский край',
+        'Приморский край (тайга и смешанные леса)',
+        'Республика Алтай'
+      ],
+      correct: 2
+    }
+  ];
 
-    const qText = $('#qText');
-    const qAnswers = $('#qAnswers');
-    const qPrev = $('#qPrev');
-    const qNext = $('#qNext');
-    const qCurrent = $('#qCurrent');
-    const qTotal = $('#qTotal');
-    const qBar = $('#qBar');
+    const els = {
+      text: $('#qText'),
+      answers: $('#qAnswers'),
+      prev: $('#qPrev'),
+      next: $('#qNext'),
+      current: $('#qCurrent'),
+      total: $('#qTotal'),
+      bar: $('#qBar'),
+      result: $('#qResult'),
+      title: $('#rTitle'),
+      textResult: $('#rText'),
+      restart: $('#qRestart')
+    };
 
-    const qResult = $('#qResult');
-    const rTitle = $('#rTitle');
-    const rText = $('#rText');
-    const qRestart = $('#qRestart');
-
-    const required = [qText, qAnswers, qPrev, qNext, qCurrent, qTotal, qBar, qResult, rTitle, rText, qRestart];
-    if (required.some((n) => !n)) return;
+    if (Object.values(els).some((n) => !n)) return;
 
     let index = 0;
     const answers = Array(quizData.length).fill(null);
-    let showCorrect = false;
+    let locked = false;
 
-    qTotal.textContent = String(quizData.length);
+    els.total.textContent = quizData.length;
 
-    const setProgress = () => {
-      const pct = (index / quizData.length) * 100;
-      qBar.style.width = `${pct}%`;
+    const progress = () => {
+      els.bar.style.width = `${(index / quizData.length) * 100}%`;
     };
 
-    function renderQuestion() {
-      const item = quizData[index];
-      if (!item) return;
+    const render = () => {
+      const q = quizData[index];
+      locked = false;
 
-      showCorrect = false;
-      qAnswers.classList.remove('is-locked');
+      els.text.textContent = q.q;
+      els.current.textContent = index + 1;
+      els.answers.innerHTML = '';
+      els.answers.classList.remove('is-locked');
 
-      qText.textContent = item.q;
-      qCurrent.textContent = String(index + 1);
-      setProgress();
+      q.a.forEach((txt, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'quiz__answer';
+        b.textContent = txt;
 
-      qAnswers.innerHTML = '';
+        if (answers[index] === i) b.classList.add('is-selected');
 
-      const frag = document.createDocumentFragment();
-
-      item.a.forEach((text, i) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'quiz__answer';
-        btn.textContent = text;
-
-        if (answers[index] === i) btn.classList.add('is-selected');
-
-        btn.addEventListener('click', () => {
-          if (showCorrect) return;
-
+        b.addEventListener('click', () => {
+          if (locked) return;
           answers[index] = i;
-
-          $$('.quiz__answer', qAnswers).forEach((b) => b.classList.remove('is-selected'));
-          btn.classList.add('is-selected');
-
-          qNext.disabled = false;
+          $$('.quiz__answer', els.answers).forEach((x) => x.classList.remove('is-selected'));
+          b.classList.add('is-selected');
+          els.next.disabled = false;
         });
 
-        frag.appendChild(btn);
+        els.answers.appendChild(b);
       });
 
-      qAnswers.appendChild(frag);
+      els.prev.disabled = index === 0;
+      els.next.disabled = answers[index] === null;
+      els.next.textContent = index === quizData.length - 1 ? 'Завершить' : 'Дальше';
+      els.result.hidden = true;
 
-      qPrev.disabled = index === 0;
-      qNext.disabled = answers[index] === null;
-      qNext.textContent = index === quizData.length - 1 ? 'Завершить' : 'Дальше';
+      progress();
+    };
 
-      qResult.hidden = true;
-    }
+    const showCorrect = () => {
+      locked = true;
+      els.answers.classList.add('is-locked');
 
-    function highlightCorrect() {
-      showCorrect = true;
-      qAnswers.classList.add('is-locked');
-
-      const correctIndex = quizData[index].correct;
-
-      $$('.quiz__answer', qAnswers).forEach((btn, i) => {
-        if (i === correctIndex) btn.classList.add('is-correct');
-        if (answers[index] === i && i !== correctIndex) btn.classList.add('is-wrong');
+      const correct = quizData[index].correct;
+      $$('.quiz__answer', els.answers).forEach((b, i) => {
+        if (i === correct) b.classList.add('is-correct');
+        if (answers[index] === i && i !== correct) b.classList.add('is-wrong');
       });
-    }
+    };
 
-    function finishQuiz() {
-      const correctCount = answers.reduce(
-        (sum, val, i) => sum + (val === quizData[i].correct ? 1 : 0),
-        0
-      );
+    const finish = () => {
+      const ok = answers.filter((a, i) => a === quizData[i].correct).length;
+      const pct = Math.round((ok / quizData.length) * 100);
 
-      const percent = Math.round((correctCount / quizData.length) * 100);
+      els.bar.style.width = '100%';
+      els.text.textContent = 'Тест завершён';
+      els.answers.innerHTML = '';
 
-      qBar.style.width = '100%';
-      qText.textContent = 'Тест завершён';
-      qAnswers.innerHTML = '';
+      els.title.textContent = `Результат: ${pct}%`;
+      els.textResult.textContent =
+        pct === 100
+          ? 'Отлично! Вы прекрасно разбираетесь в теме манула.'
+          : pct >= 70
+          ? 'Хороший результат. Вы знаете о мануле больше, чем большинство людей.'
+          : pct >= 40
+          ? 'Неплохо, но статья явно была не зря 🙂'
+          : 'Стоит перечитать материал — манул заслуживает внимания.';
 
-      rTitle.textContent = `Результат: ${percent}%`;
+      els.result.hidden = false;
+      els.prev.disabled = true;
+      els.next.disabled = true;
+    };
 
-      if (percent === 100) {
-        rText.textContent = 'Отлично! Вы прекрасно разбираетесь в теме манула.';
-      } else if (percent >= 70) {
-        rText.textContent = 'Хороший результат. Вы знаете о мануле больше, чем большинство людей.';
-      } else if (percent >= 40) {
-        rText.textContent = 'Неплохо, но статья явно была не зря 🙂';
-      } else {
-        rText.textContent = 'Стоит перечитать материал — манул заслуживает внимания.';
+    els.prev.addEventListener('click', () => {
+      if (index > 0) {
+        index--;
+        render();
       }
-
-      qResult.hidden = false;
-      qPrev.disabled = true;
-      qNext.disabled = true;
-    }
-
-    qPrev.addEventListener('click', () => {
-      if (index === 0) return;
-      index -= 1;
-      renderQuestion();
     });
 
-    qNext.addEventListener('click', () => {
+    els.next.addEventListener('click', () => {
       if (answers[index] === null) return;
-
-      if (!showCorrect) {
-        highlightCorrect();
-
-        window.setTimeout(() => {
-          if (index < quizData.length - 1) {
-            index += 1;
-            renderQuestion();
-          } else {
-            finishQuiz();
-          }
+      if (!locked) {
+        showCorrect();
+        setTimeout(() => {
+          index < quizData.length - 1 ? (index++, render()) : finish();
         }, 600);
       }
     });
 
-    qRestart.addEventListener('click', () => {
+    els.restart.addEventListener('click', () => {
       answers.fill(null);
       index = 0;
-      renderQuestion();
+      render();
       $('#quiz')?.scrollIntoView({ behavior: 'smooth' });
     });
 
-    renderQuestion();
+    render();
   }
 
+  /* ===== Photo Strip Auto Scroll ===== */
+
   function initPhotoStripAutoScroll() {
-    const track = document.querySelector('.photo-strip__track');
+    const track = $('.photo-strip__track');
     if (!track) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    track.classList.add('is-auto');
-
-    const SPEED = 45;
-    let rafId = null;
-    let running = true;
+    let raf;
     let last = performance.now();
+    let active = true;
+
+    const step = (t) => {
+      if (!active) return;
+      const dt = (t - last) / 1000;
+      last = t;
+
+      const max = track.scrollWidth - track.clientWidth;
+      if (max > 0) {
+        track.scrollLeft += 45 * dt;
+        if (track.scrollLeft >= max - 1) track.scrollLeft = 0;
+      }
+
+      raf = requestAnimationFrame(step);
+    };
 
     const pause = () => {
-      if (!running) return;
-      running = false;
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = null;
+      active = false;
+      cancelAnimationFrame(raf);
       track.classList.remove('is-auto');
     };
 
     const resume = () => {
-      if (running) return;
-      running = true;
-      track.classList.add('is-auto');
+      if (active) return;
+      active = true;
       last = performance.now();
-      rafId = requestAnimationFrame(step);
-    };
-
-    const step = (now) => {
-      if (!running) return;
-
-      const dt = (now - last) / 1000;
-      last = now;
-
-      const maxScroll = track.scrollWidth - track.clientWidth;
-      if (maxScroll > 0) {
-        track.scrollLeft += SPEED * dt;
-        if (track.scrollLeft >= maxScroll - 1) track.scrollLeft = 0;
-      }
-
-      rafId = requestAnimationFrame(step);
+      track.classList.add('is-auto');
+      raf = requestAnimationFrame(step);
     };
 
     track.addEventListener('mouseenter', pause);
     track.addEventListener('mouseleave', resume);
-
     track.addEventListener('wheel', pause, { passive: true });
     track.addEventListener('touchstart', pause, { passive: true });
     track.addEventListener('pointerdown', pause);
 
-    let t = null;
+    let t;
     const resumeLater = () => {
       clearTimeout(t);
       t = setTimeout(resume, 2000);
@@ -407,8 +386,11 @@
     track.addEventListener('touchend', resumeLater, { passive: true });
     track.addEventListener('pointerup', resumeLater);
 
-    rafId = requestAnimationFrame(step);
+    track.classList.add('is-auto');
+    raf = requestAnimationFrame(step);
   }
+
+  /* ===== Init ===== */
 
   document.addEventListener('DOMContentLoaded', () => {
     const headerApi = initHeaderNav();
@@ -420,6 +402,3 @@
     initPhotoStripAutoScroll();
   });
 })();
-
-
-

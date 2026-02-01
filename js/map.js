@@ -1,105 +1,271 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const mapEl = document.getElementById("map");
+document.addEventListener('DOMContentLoaded', async () => {
+  'use strict';
+
+  const mapEl = document.getElementById('map');
   if (!mapEl) return;
 
-  const map = L.map("map", {
-  zoomControl: true,
-  attributionControl: false
-}).setView([46.5, 94.0], 4);
+  /* ===== Map init ===== */
 
-  
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors'
+  const map = L.map('map', {
+    zoomControl: true,
+    attributionControl: false
+  }).setView([49.5, 95], 4);
+
+  L.control
+    .attribution({ prefix: false })
+    .addAttribution('&copy; OpenStreetMap contributors')
+    .addTo(map);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19
   }).addTo(map);
 
-  
-map.scrollWheelZoom.disable();
-
-
-map.getContainer().addEventListener("click", () => {
-  map.scrollWheelZoom.enable();
-});
-
-map.getContainer().addEventListener("mouseleave", () => {
   map.scrollWheelZoom.disable();
-});
+  map.doubleClickZoom.disable();
 
-  L.control.attribution({
-  prefix: false
-}).addAttribution('&copy; OpenStreetMap contributors')
-  .addTo(map);
+  const container = map.getContainer();
+  container.addEventListener('click', () => map.scrollWheelZoom.enable());
+  container.addEventListener('mouseleave', () => map.scrollWheelZoom.disable());
 
-  const zoosData = [
-    { name: "Зоопарк (Алматы)", lat: 43.2389, lng: 76.8897, note: "Учебная точка" },
-    { name: "Зоопарк (Новосибирск)", lat: 55.0084, lng: 82.9357, note: "Учебная точка" }
-  ];
+  /* ===== Layers ===== */
 
-  const reservesData = [
-    { name: "Заповедник (Алтай)", lat: 50.1, lng: 86.3, note: "Учебная точка" },
-    { name: "Заповедник (Монголия)", lat: 47.9, lng: 106.9, note: "Учебная точка" }
-  ];
+  const layers = {
+    zoos: L.layerGroup().addTo(map),
+    reserves: L.layerGroup().addTo(map),
+    range: L.layerGroup().addTo(map)
+  };
 
-  const zoosLayer = L.layerGroup();
-  zoosData.forEach((p) => {
-    L.marker([p.lat, p.lng])
-      .bindPopup(`<b>${p.name}</b><br><small>${p.note}</small>`)
-      .addTo(zoosLayer);
-  });
+  /* ===== UI ===== */
 
-  const reservesLayer = L.layerGroup();
-  reservesData.forEach((p) => {
-    L.circleMarker([p.lat, p.lng], {
-      radius: 7,
-      color: "#f39c12",
-      weight: 2,
-      fillColor: "#f39c12",
-      fillOpacity: 0.25
-    })
-      .bindPopup(`<b>${p.name}</b><br><small>${p.note}</small>`)
-      .addTo(reservesLayer);
-  });
+  const $ = (id) => document.getElementById(id);
 
-  const rangeLayer = L.polygon(
-    [
-      [55, 65],
-      [54, 95],
-      [50, 110],
-      [45, 118],
-      [40, 112],
-      [38, 95],
-      [42, 75]
-    ],
-    {
-      color: "#f39c12",
-      weight: 2,
-      fillColor: "#f39c12",
-      fillOpacity: 0.12
-    }
-  );
+  const countZoosEl = $('countZoos');
+  const countReservesEl = $('countReserves');
+  const fitAllBtn = $('fitAll');
 
-  
-  zoosLayer.addTo(map);
-  reservesLayer.addTo(map);
-  rangeLayer.addTo(map);
+  const searchInput = $('mapSearchInput');
+  const searchList = $('mapSearchList');
+  const searchClear = $('mapSearchClear');
+  const searchTotal = $('mapSearchTotal');
 
-  const chips = document.querySelectorAll(".chip[data-layer]");
+  /* ===== Helpers ===== */
 
-  function toggleLayer(layerName, enable) {
-    if (layerName === "zoos") enable ? zoosLayer.addTo(map) : map.removeLayer(zoosLayer);
-    if (layerName === "reserves") enable ? reservesLayer.addTo(map) : map.removeLayer(reservesLayer);
-    if (layerName === "range") enable ? rangeLayer.addTo(map) : map.removeLayer(rangeLayer);
+  const safe = (s) =>
+    String(s ?? '').replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[c]));
+
+  const norm = (s) =>
+    String(s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+
+  const loadJSON = async (path) => {
+    const res = await fetch(new URL(path, location.href), { cache: 'no-cache' });
+    if (!res.ok) throw new Error(res.status);
+    return res.json();
+  };
+
+  /* ===== Data ===== */
+
+  let zoos = [];
+  let reserves = [];
+  let range = { polygons: [] };
+
+  try {
+    [zoos, reserves, range] = await Promise.all([
+      loadJSON('data/zoos.json'),
+      loadJSON('data/reserves.json'),
+      loadJSON('data/range.json')
+    ]);
+  } catch (e) {
+    alert('Не загрузились данные карты. Открой консоль (F12).');
+    console.error(e);
+    return;
   }
 
-  chips.forEach((chip) => {
-    chip.addEventListener("click", () => {
-      const layerName = chip.dataset.layer;
-      const enable = !chip.classList.contains("is-active");
-      chip.classList.toggle("is-active", enable);
-      toggleLayer(layerName, enable);
+  /* ===== Icons ===== */
+
+  const zooIcon = L.divIcon({
+    className: 'zoo-marker',
+    html: '🐾',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15]
+  });
+
+  const reserveIcon = L.divIcon({
+    className: 'reserve-marker',
+    html: '🌿',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15]
+  });
+
+  /* ===== Render ===== */
+
+  const zooMarkers = [];
+  const reserveMarkers = [];
+
+  zoos.forEach((p) => {
+    const m = L.marker([p.lat, p.lng], { icon: zooIcon })
+      .bindPopup(
+        `<b>${safe(p.name)}</b><br>
+         <small>${safe(p.country)}${p.region ? `, ${safe(p.region)}` : ''}</small><br>
+         <small><b>Тип:</b> зоопарк</small>`
+      )
+      .addTo(layers.zoos);
+
+    zooMarkers.push({ ...p, type: 'zoo', marker: m });
+  });
+
+  reserves.forEach((p) => {
+    const m = L.marker([p.lat, p.lng], { icon: reserveIcon })
+      .bindPopup(
+        `<b>${safe(p.name)}</b><br>
+         <small>${safe(p.country)}${p.region ? `, ${safe(p.region)}` : ''}</small><br>
+         <small><b>Тип:</b> ООПТ / заповедник</small>`
+      )
+      .addTo(layers.reserves);
+
+    reserveMarkers.push({ ...p, type: 'reserve', marker: m });
+  });
+
+  (range.polygons || []).forEach((p) => {
+    L.polygon(p.coords, {
+      color: '#f39c12',
+      weight: 2,
+      dashArray: '7 7',
+      fillOpacity: 0.08
+    })
+      .bindPopup(`<b>${safe(p.name || 'Ареал манула')}</b>`)
+      .addTo(layers.range);
+  });
+
+  if (countZoosEl) countZoosEl.textContent = zoos.length;
+  if (countReservesEl) countReservesEl.textContent = reserves.length;
+
+  /* ===== Chips ===== */
+
+  document.querySelectorAll('.chip[data-layer]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const name = chip.dataset.layer;
+      const active = !chip.classList.contains('is-active');
+      chip.classList.toggle('is-active', active);
+      active ? layers[name].addTo(map) : map.removeLayer(layers[name]);
     });
   });
 
-  setTimeout(() => map.invalidateSize(), 50);
-});
+  /* ===== Fit bounds ===== */
 
+  const fitAll = () => {
+    const bounds = L.latLngBounds([]);
+
+    Object.values(layers).forEach((layer) => {
+      layer.eachLayer((l) => {
+        if (l.getBounds) bounds.extend(l.getBounds());
+        else if (l.getLatLng) bounds.extend(l.getLatLng());
+      });
+    });
+
+    bounds.isValid() && map.fitBounds(bounds.pad(0.15));
+  };
+
+  fitAllBtn?.addEventListener('click', fitAll);
+  fitAll();
+
+  /* ===== Legend ===== */
+
+  const legend = L.control({ position: 'bottomleft' });
+
+  legend.onAdd = () => {
+    const div = L.DomUtil.create('div', 'map-legend');
+    div.innerHTML = `
+      <div class="map-legend__row">
+        <span class="map-legend__icon zoo">🐾</span>
+        <span>Зоопарки</span>
+      </div>
+      <div class="map-legend__row">
+        <span class="map-legend__icon reserve">🌿</span>
+        <span>Заповедники / ООПТ</span>
+      </div>
+      <div class="map-legend__row">
+        <span class="map-legend__swatch"></span>
+        <span>Ареал обитания</span>
+      </div>
+      <div class="map-legend__hint">Клик по карте → включить зум колесом</div>
+    `;
+    L.DomEvent.disableClickPropagation(div);
+    L.DomEvent.disableScrollPropagation(div);
+    return div;
+  };
+
+  legend.addTo(map);
+
+  /* ===== Search ===== */
+
+  const allItems = [...zooMarkers, ...reserveMarkers];
+  if (searchTotal) searchTotal.textContent = allItems.length;
+
+  const renderList = (items) => {
+    if (!searchList) return;
+    searchList.innerHTML = '';
+
+    const limited = items.slice(0, 80);
+
+    limited.forEach((it) => {
+      const el = document.createElement('div');
+      el.className = 'map-search__item';
+      el.setAttribute('role', 'option');
+
+      const badgeLayer = it.type === 'zoo' ? 'zoos' : 'reserves';
+      const badgeText = it.type === 'zoo' ? 'Зоопарк' : 'ООПТ';
+      const badgeClass = it.type === 'zoo' ? 'zoo' : 'reserve';
+
+      el.innerHTML = `
+        <div class="map-search__item-title">
+          <span class="map-search__badge ${badgeClass}">${badgeText}</span>
+          <span>${safe(it.name)}</span>
+        </div>
+        <div class="map-search__item-sub">
+          ${safe(it.country)}${it.region ? `, ${safe(it.region)}` : ''}
+        </div>
+      `;
+
+      el.addEventListener('click', () => {
+        layers[badgeLayer].addTo(map);
+        document.querySelector(`.chip[data-layer="${badgeLayer}"]`)
+          ?.classList.add('is-active');
+
+        map.setView([it.lat, it.lng], Math.max(map.getZoom(), 7), { animate: true });
+        setTimeout(() => it.marker.openPopup(), 200);
+      });
+
+      searchList.appendChild(el);
+    });
+
+    if (items.length > limited.length) {
+      const more = document.createElement('div');
+      more.className = 'map-search__hint';
+      more.textContent = `Показано ${limited.length} из ${items.length}. Уточните запрос.`;
+      searchList.appendChild(more);
+    }
+  };
+
+  const filter = () => {
+    const q = norm(searchInput?.value);
+    renderList(!q ? allItems : allItems.filter((it) =>
+      norm(`${it.name} ${it.country} ${it.region || ''}`).includes(q)
+    ));
+  };
+
+  searchInput?.addEventListener('input', filter);
+  searchClear?.addEventListener('click', () => {
+    if (searchInput) searchInput.value = '';
+    renderList(allItems);
+    searchInput?.focus();
+  });
+
+  renderList(allItems);
+  setTimeout(() => map.invalidateSize(), 80);
+});

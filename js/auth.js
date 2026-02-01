@@ -1,4 +1,3 @@
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import {
   getAuth,
@@ -11,7 +10,8 @@ import {
   sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
-/* Firebase config */
+/* ===== Firebase ===== */
+
 const firebaseConfig = {
   apiKey: "AIzaSyCgh_VG1YgS_ZTO9BTfFQNsBepVBPSmBXY",
   authDomain: "manulife-bb2e8.firebaseapp.com",
@@ -26,21 +26,21 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 document.addEventListener("DOMContentLoaded", () => {
-  /* Header controls index.html*/
-  const openBtn = document.getElementById("openAuth"); 
-  const logoutBtn = document.getElementById("logoutBtn"); 
-  const authNick = document.getElementById("authNick"); 
+  "use strict";
 
-  /* Modal index.html */
+  /* ===== DOM ===== */
+
+  const openBtn = document.getElementById("openAuth");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const authNick = document.getElementById("authNick");
+
   const modal = document.getElementById("authModal");
   const modalCloseEls = modal ? modal.querySelectorAll("[data-close]") : [];
   const modalTabs = modal ? Array.from(modal.querySelectorAll(".auth-modal__tab")) : [];
   const modalPanes = modal ? Array.from(modal.querySelectorAll(".auth-modal__form")) : [];
 
-  /* Forms auth.html */
   const regForm =
     document.getElementById("registerFormModal") || document.getElementById("registerForm");
-
   const logForm = document.getElementById("loginFormModal") || document.getElementById("loginForm");
 
   const regMsg = document.getElementById("regMsgModal") || document.getElementById("regMsg");
@@ -49,9 +49,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const resetBtn =
     document.getElementById("resetBtnModal") || document.getElementById("resetBtn");
 
-  /* Helpers */
+  /* ===== Helpers ===== */
+
   const setMsg = (node, text) => {
     if (node) node.textContent = text || "";
+  };
+
+  const getValue = (idModal, idPage) => {
+    const el = document.getElementById(idModal) || document.getElementById(idPage);
+    return el?.value ?? "";
   };
 
   const openModal = () => {
@@ -69,16 +75,15 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const setTab = (name) => {
+    if (!modal) return;
     modalTabs.forEach((t) => t.classList.toggle("is-active", t.dataset.tab === name));
     modalPanes.forEach((p) => p.classList.toggle("is-active", p.dataset.pane === name));
     setMsg(regMsg, "");
     setMsg(logMsg, "");
   };
 
-  const getEl = (idModal, idPage) =>
-    document.getElementById(idModal) || document.getElementById(idPage);
+  /* ===== Modal events ===== */
 
-  /* Wire modal open/close */
   openBtn?.addEventListener("click", openModal);
   modalCloseEls.forEach((el) => el.addEventListener("click", closeModal));
 
@@ -86,10 +91,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeModal();
   });
 
-  /* Tabs */
   modalTabs.forEach((t) => t.addEventListener("click", () => setTab(t.dataset.tab)));
 
-  /* Logout */
+  /* ===== Logout ===== */
+
   const doLogout = async () => {
     try {
       await signOut(auth);
@@ -98,16 +103,18 @@ document.addEventListener("DOMContentLoaded", () => {
       console.warn("[auth] signOut error:", e);
     }
   };
+
   logoutBtn?.addEventListener("click", doLogout);
 
-  /* Register (with email verification + message, no redirect) */
+  /* ===== Register ===== */
+
   regForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
     setMsg(regMsg, "");
 
-    const email = getEl("regEmailModal", "regEmail")?.value?.trim() || "";
-    const pass = getEl("regPassModal", "regPass")?.value || "";
-    const nickRaw = getEl("regNickModal", "regNick")?.value?.trim() || "";
+    const email = getValue("regEmailModal", "regEmail").trim();
+    const pass = getValue("regPassModal", "regPass");
+    const nickRaw = getValue("regNickModal", "regNick").trim();
 
     if (!email || !pass) {
       setMsg(regMsg, "Заполните почту и пароль.");
@@ -121,13 +128,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const fallbackNick = nickRaw && nickRaw.length >= 2 ? nickRaw : email.split("@")[0];
 
     try {
-
       const cred = await createUserWithEmailAndPassword(auth, email, pass);
 
       await updateProfile(cred.user, { displayName: fallbackNick });
-
       await sendEmailVerification(cred.user);
-
       await signOut(auth);
 
       setMsg(
@@ -144,13 +148,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  /*Login (block if email not verified)*/
+  /* ===== Login ===== */
+
   logForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
     setMsg(logMsg, "");
 
-    const email = getEl("logEmailModal", "logEmail")?.value?.trim() || "";
-    const pass = getEl("logPassModal", "logPass")?.value || "";
+    const email = getValue("logEmailModal", "logEmail").trim();
+    const pass = getValue("logPassModal", "logPass");
 
     if (!email || !pass) {
       setMsg(logMsg, "Заполните почту и пароль.");
@@ -177,19 +182,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const code = err?.code || "";
       if (code === "auth/invalid-credential" || code === "auth/wrong-password")
         setMsg(logMsg, "Неверная почта или пароль.");
-      else if (code === "auth/user-not-found")
-        setMsg(logMsg, "Пользователь не найден.");
-      else if (code === "auth/invalid-email")
-        setMsg(logMsg, "Некорректная почта.");
+      else if (code === "auth/user-not-found") setMsg(logMsg, "Пользователь не найден.");
+      else if (code === "auth/invalid-email") setMsg(logMsg, "Некорректная почта.");
       else setMsg(logMsg, err?.message || "Ошибка входа");
     }
   });
 
-  /*Reset password */
+  /* ===== Reset password ===== */
+
   resetBtn?.addEventListener("click", async () => {
     setMsg(logMsg, "");
-    const email = getEl("logEmailModal", "logEmail")?.value?.trim() || "";
 
+    const email = getValue("logEmailModal", "logEmail").trim();
     if (!email) {
       setMsg(logMsg, "Введите почту и нажмите ещё раз.");
       return;
@@ -206,8 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  
-
+  /* ===== Auth state ===== */
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -226,19 +229,21 @@ document.addEventListener("DOMContentLoaded", () => {
         authNick.hidden = false;
         authNick.textContent = user.displayName || user.email || "Пользователь";
       }
-    } else {
-      if (openBtn) openBtn.hidden = false;
-      if (logoutBtn) logoutBtn.hidden = true;
+      return;
+    }
 
-      if (authNick) {
-        authNick.hidden = true;
-        authNick.textContent = "";
-      }
+    if (openBtn) openBtn.hidden = false;
+    if (logoutBtn) logoutBtn.hidden = true;
+
+    if (authNick) {
+      authNick.hidden = true;
+      authNick.textContent = "";
     }
   });
 
-  setTab("register");
+  if (modal) setTab("register");
 });
+
 
 
 
