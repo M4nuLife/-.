@@ -63,13 +63,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     String(s || '').toLowerCase().replace(/\s+/g, ' ').trim();
 
 async function loadJSON(relPath) {
-  const res = await fetch(relPath, { cache: "no-cache" });
+  const url = new URL(relPath, window.location.href).toString();
+  const res = await fetch(url, { cache: "no-store" });
 
   if (!res.ok) {
-    throw new Error(`HTTP ${res.status} for ${relPath}`);
+    throw new Error(`HTTP ${res.status} for ${url}`);
   }
 
-  return await res.json();
+  const text = await res.text();
+
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    throw new Error(`Bad JSON in ${url}. First 120 chars: ${text.slice(0, 120)}`);
+  }
 }
 
   /* ===== Data ===== */
