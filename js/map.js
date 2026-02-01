@@ -51,33 +51,34 @@ document.addEventListener('DOMContentLoaded', async () => {
   /* ===== Helpers ===== */
 
   const safe = (s) =>
-    String(s ?? '').replace(/[&<>"']/g, (c) => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#39;'
-    }[c]));
+    String(s ?? '').replace(/[&<>"']/g, (c) =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[c])
+    );
 
-  const norm = (s) =>
-    String(s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  const norm = (s) => String(s || '').toLowerCase().replace(/\s+/g, ' ').trim();
 
-async function loadJSON(relPath) {
-  const url = new URL(relPath, window.location.href).toString();
-  const res = await fetch(url, { cache: "no-store" });
+  async function loadJSON(relPath) {
+    const url = new URL(relPath, window.location.href).toString();
+    const res = await fetch(url, { cache: 'no-store' });
 
-  if (!res.ok) {
-    throw new Error(`HTTP ${res.status} for ${url}`);
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} for ${url}`);
+    }
+
+    const text = await res.text();
+
+    try {
+      return JSON.parse(text);
+    } catch (e) {
+      throw new Error(`Bad JSON in ${url}. First 120 chars: ${text.slice(0, 120)}`);
+    }
   }
-
-  const text = await res.text();
-
-  try {
-    return JSON.parse(text);
-  } catch (e) {
-    throw new Error(`Bad JSON in ${url}. First 120 chars: ${text.slice(0, 120)}`);
-  }
-}
 
   /* ===== Data ===== */
 
@@ -153,37 +154,92 @@ async function loadJSON(relPath) {
       .addTo(layers.range);
   });
 
-  if (countZoosEl) countZoosEl.textContent = zoos.length;
-  if (countReservesEl) countReservesEl.textContent = reserves.length;
+  if (countZoosEl) countZoosEl.textContent = String(zoos.length);
+  if (countReservesEl) countReservesEl.textContent = String(reserves.length);
 
   /* ===== Chips ===== */
 
-  document.querySelectorAll('.chip[data-layer]').forEach((chip) => {
+  const chips = Array.from(document.querySelectorAll('.chip[data-layer]'));
+
+  const setChipState = (layerName, enable) => {
+    const chip = document.querySelector(`.chip[data-layer="${layerName}"]`);
+    if (!chip) return;
+    chip.classList.toggle('is-active', enable);
+  };
+
+  const enableLayer = (name) => {
+    layers[name].addTo(map);
+    setChipState(name, true);
+  };
+
+  const disableLayer = (name) => {
+    map.removeLayer(layers[name]);
+    setChipState(name, false);
+  };
+
+  chips.forEach((chip) => {
     chip.addEventListener('click', () => {
       const name = chip.dataset.layer;
-      const active = !chip.classList.contains('is-active');
-      chip.classList.toggle('is-active', active);
-      active ? layers[name].addTo(map) : map.removeLayer(layers[name]);
+      const enable = !chip.classList.contains('is-active');
+      chip.classList.toggle('is-active', enable);
+      enable ? layers[name].addTo(map) : map.removeLayer(layers[name]);
     });
   });
 
-  /* ===== Fit bounds ===== */
+  /* ===== Fit / Toggle all ===== */
 
-  const fitAll = () => {
+  const calcBoundsAll = () => {
     const bounds = L.latLngBounds([]);
 
-    Object.values(layers).forEach((layer) => {
-      layer.eachLayer((l) => {
-        if (l.getBounds) bounds.extend(l.getBounds());
-        else if (l.getLatLng) bounds.extend(l.getLatLng());
-      });
+    layers.range.eachLayer((l) => {
+      if (l.getBounds) bounds.extend(l.getBounds());
     });
 
-    bounds.isValid() && map.fitBounds(bounds.pad(0.15));
+    layers.reserves.eachLayer((l) => {
+      if (l.getLatLng) bounds.extend(l.getLatLng());
+      else if (l.getBounds) bounds.extend(l.getBounds());
+    });
+
+    layers.zoos.eachLayer((l) => {
+      if (l.getLatLng) bounds.extend(l.getLatLng());
+      else if (l.getBounds) bounds.extend(l.getBounds());
+    });
+
+    return bounds;
   };
 
-  fitAllBtn?.addEventListener('click', fitAll);
-  fitAll();
+  const showAll = () => {
+    enableLayer('range');
+    enableLayer('reserves');
+    enableLayer('zoos');
+
+    const bounds = calcBoundsAll();
+    if (!bounds.isValid()) return;
+
+    map.invalidateSize();
+    map.fitBounds(bounds.pad(0.15));
+  };
+
+  const hideAll = () => {
+    disableLayer('range');
+    disableLayer('reserves');
+    disableLayer('zoos');
+    map.closePopup();
+  };
+
+  const isAllVisible = () =>
+    ['range', 'reserves', 'zoos'].every((k) => map.hasLayer(layers[k]));
+
+  fitAllBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (isAllVisible()) hideAll();
+    else showAll();
+  });
+
+  // по умолчанию показать всё и отзумить
+  showAll();
 
   /* ===== Legend ===== */
 
@@ -216,7 +272,7 @@ async function loadJSON(relPath) {
   /* ===== Search ===== */
 
   const allItems = [...zooMarkers, ...reserveMarkers];
-  if (searchTotal) searchTotal.textContent = allItems.length;
+  if (searchTotal) searchTotal.textContent = String(allItems.length);
 
   const renderList = (items) => {
     if (!searchList) return;
@@ -244,9 +300,7 @@ async function loadJSON(relPath) {
       `;
 
       el.addEventListener('click', () => {
-        layers[badgeLayer].addTo(map);
-        document.querySelector(`.chip[data-layer="${badgeLayer}"]`)
-          ?.classList.add('is-active');
+        enableLayer(badgeLayer);
 
         map.setView([it.lat, it.lng], Math.max(map.getZoom(), 7), { animate: true });
         setTimeout(() => it.marker.openPopup(), 200);
@@ -265,12 +319,20 @@ async function loadJSON(relPath) {
 
   const filter = () => {
     const q = norm(searchInput?.value);
-    renderList(!q ? allItems : allItems.filter((it) =>
+    if (!q) {
+      renderList(allItems);
+      return;
+    }
+
+    const filtered = allItems.filter((it) =>
       norm(`${it.name} ${it.country} ${it.region || ''}`).includes(q)
-    ));
+    );
+
+    renderList(filtered);
   };
 
   searchInput?.addEventListener('input', filter);
+
   searchClear?.addEventListener('click', () => {
     if (searchInput) searchInput.value = '';
     renderList(allItems);
