@@ -1,318 +1,339 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>manulife — Статья</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>manulife — Статья</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800;900&display=swap"
-    rel="stylesheet"
-  />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="icon" type="image/png" href="img/manul_logo_head_fixed.png" />
-  <link rel="stylesheet" href="css/style.css" />
-</head>
+    <link rel="icon" type="image/png" href="img/manul_logo_head_fixed.png" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
 
-<body>
-  <header class="header header--scrolled" id="header">
-    <a class="header__logo" href="index.html#intro" aria-label="На главную">
-      <img class="header__logo-img" src="img/manul_logo_head_fixed.png" alt="manulife" />
-    </a>
+  <body>
+    <header class="header header--scrolled" id="header">
+      <a class="header__logo" href="index.html#intro" aria-label="На главную">
+        <img
+          class="header__logo-img"
+          src="img/manul_logo_head_fixed.png"
+          alt="manulife"
+          loading="lazy"
+        />
+      </a>
 
-    <nav class="nav" aria-label="Навигация">
-      <ul class="nav__list">
-        <li class="nav__item"><a class="nav__link" href="index.html#intro">Главная</a></li>
-        <li class="nav__item"><a class="nav__link" href="article.html#quiz">Тест</a></li>
-        <li class="nav__item"><a class="nav__link" href="map.html">Карта</a></li>
-      </ul>
-    </nav>
+      <nav class="nav" id="mainNav" aria-label="Навигация">
+        <ul class="nav__list">
+          <li class="nav__item">
+            <a class="nav__link" href="index.html#intro">Главная</a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="article.html#quiz">Тест</a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="map.html">Карта</a>
+          </li>
+        </ul>
+      </nav>
 
-    <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">☰</button>
-  </header>
-
-  <main>
-<section class="article" id="article">
-  <div class="container">
-
-    <h1 class="article__title">
-      Manulife: Всё о самой загадочной дикой кошке России
-    </h1>
-
-    <p class="article__lead">
-      Манул, или палласов кот (лат. <em>Felis manul</em>), — это уникальная дикая кошка,
-      чей облик, кажется, застыл во времени. Это невысокий, коренастый и невероятно
-      пушистый хищник, который словно сошёл со страниц древней летописи.
-    </p>
-
-    <div class="article__content">
-
-      <h2>1. Общая информация</h2>
-
-      <ul>
-        <li>
-          <strong>Внешность и размеры:</strong>
-          Манул — кошка средних размеров, но из-за очень густого и длинного меха кажется массивнее,
-          чем есть на самом деле. Длина тела составляет 50–65 см, хвоста — 20–35 см,
-          вес — от 2 до 5 кг. Отличительные черты — приплюснутая широкая голова,
-          маленькие округлые широко расставленные уши и выразительные жёлтые глаза
-          с круглыми зрачками, которые не сужаются даже при ярком свете.
-          Плотность меха достигает до 9000 волосков на квадратный сантиметр.
-          Окрас светло-серый с охристыми оттенками и эффектом «инея»,
-          на щеках заметны тёмные полосы.
-        </li>
-
-        <li>
-          <strong>Места обитания:</strong>
-          В России манул обитает на ограниченных территориях степей и лесостепей.
-          Основной ареал сосредоточен в Республике Алтай (Чуйская и Курайская степи,
-          плато Укок), Республике Тыва (степные котловины) и Забайкальском крае,
-          где он занимает почти всю степную часть. Отдельные группировки отмечены
-          в Бурятии, единичные заходы — на юге Красноярского края и в Иркутской области.
-          Манул предпочитает каменистые степи и горные склоны с россыпями и скалами.
-          Критически важны низкий снежный покров зимой (не более 15–17 см)
-          и наличие нор для укрытия.
-        </li>
-
-        <li>
-          <strong>Питание:</strong>
-          Основу рациона составляют мелкие грызуны и пищухи,
-          не впадающие в спячку: даурская и монгольская пищухи,
-          полёвка Брандта, даурский суслик.
-          Реже манул добывает зайцев, птиц и насекомых.
-          Охотится, скрадывая добычу или карауля её у нор.
-        </li>
-
-        <li>
-          <strong>Образ жизни и размножение:</strong>
-          Манул ведёт одиночный и оседлый образ жизни.
-          Участок самки занимает около 10 км², самца — до 27 км².
-          Убежищами служат расщелины скал и норы сурков, барсуков или лисиц.
-          Гон происходит в феврале–апреле.
-          Беременность длится около 60 дней, и с конца апреля по июнь
-          самка рожает от 2 до 6 котят (редко до 8).
-          Котята начинают самостоятельную жизнь в возрасте 3,5–5 месяцев.
-          В природе манулы живут обычно не более 6 лет.
-        </li>
-
-        <li>
-          <strong>Численность:</strong>
-          Численность манулов в России оценивается от 4,5 до 9,5 тысяч особей,
-          более половины из которых обитает в Забайкальском крае.
-          Популяция подвержена резким колебаниям и сильно зависит от снежности зим
-          и состояния кормовой базы.
-        </li>
-      </ul>
-
-      <h2>2. Интересные факты</h2>
-
-      <ul>
-        <li>
-          <strong>Живое ископаемое:</strong>
-          Манул считается одной из самых древних ветвей семейства кошачьих.
-          Его вид существует практически без изменений уже несколько миллионов лет.
-        </li>
-
-        <li>
-          <strong>Рекордсмен по пушистости:</strong>
-          С плотностью меха до 9000 волосков на квадратный сантиметр
-          манул — абсолютный чемпион по теплоизоляции среди кошек,
-          выдерживающий морозы до −50&nbsp;°C.
-        </li>
-
-        <li>
-          <strong>Мастер маскировки:</strong>
-          Окрас манула идеально сливается со степной травой и скалами,
-          делая его практически невидимым при неподвижности.
-        </li>
-
-        <li>
-          <strong>Вынужденный путешественник:</strong>
-          В голодные годы манулы способны на дальние переходы —
-          зафиксированы перемещения более чем на 170 километров.
-        </li>
-
-        <li>
-          <strong>Уникальные глаза:</strong>
-          Круглые жёлтые глаза придают манулу суровое выражение,
-          хорошо приспособлены для охоты в сумерках,
-          но плохо видят в полной темноте.
-        </li>
-
-        <li>
-          <strong>Скрытность как правило:</strong>
-          Манул невероятно осторожен и скрытен,
-          что делает его крайне трудным объектом для изучения.
-        </li>
-      </ul>
-
-      <h2>3. Причины исчезновения (лимитирующие факторы)</h2>
-
-      <ul>
-        <li>
-          <strong>Глубокий снег:</strong>
-          Снежный покров более 15–20 см лишает манула возможности охотиться
-          и делает его уязвимым для хищников.
-        </li>
-
-        <li>
-          <strong>Депрессия кормовой базы:</strong>
-          Снижение численности пищух и полёвок приводит к голоду
-          и вынужденным миграциям.
-        </li>
-
-        <li>
-          <strong>Хозяйственное освоение степей:</strong>
-          Распашка земель, добыча ресурсов и развитие инфраструктуры
-          уничтожают места обитания манула.
-        </li>
-
-        <li>
-          <strong>Браконьерство и случайная добыча:</strong>
-          Опасность представляют петли и капканы,
-          установленные на других животных.
-        </li>
-
-        <li>
-          <strong>Собаки:</strong>
-          Пастушьи и бродячие собаки являются серьёзными конкурентами
-          и прямыми убийцами манулов.
-        </li>
-
-        <li>
-          <strong>Исторический фактор:</strong>
-          Массовое применение родентицидов в прошлом подрывало кормовую базу
-          и приводило к отравлениям хищников.
-        </li>
-      </ul>
-
-      <h2>4. Охрана вида</h2>
-
-      <ul>
-        <li>
-          <strong>Правовая защита:</strong>
-          Манул занесён в Красную книгу РФ и Приложение II Конвенции СИТЕС.
-        </li>
-
-        <li>
-          <strong>ООПТ:</strong>
-          Значительная часть ареала находится под охраной
-          (Даурский и Сохондинский заповедники,
-          «Убсунурская котловина», «Сайлюгемский», «Алханай»,
-          заказник «Долина дзерена»).
-        </li>
-
-        <li>
-          <strong>Специальные программы:</strong>
-          В Даурском заповеднике реализуется программа мониторинга,
-          реабилитации и экологического просвещения.
-        </li>
-
-        <li>
-          <strong>Необходимые меры:</strong>
-          Расширение ООПТ, контроль выгула собак,
-          борьба с пожарами и петлями,
-          создание центров реабилитации.
-        </li>
-      </ul>
-
-      <div class="article__callout">
-        Манул — хрупкий символ бескрайних степей Азии.
-        Его сохранение зависит не только от работы учёных и государства,
-        но и от нашего общего понимания ценности экосистем.
-      </div>
-
-      <p>
-        <strong>Авторы-составители текста на основе научных данных:</strong>
-        А.Н. Барашкова, В.Е. Кирилюк, И.Э. Смелянский.
-      </p>
-
-    </div>
-  </div>
-</section>
-
-
-
-
-    <section class="quiz-section" id="quiz">
-  <div class="quiz container">
-    <div class="quiz__head">
-      <h2 class="quiz__title">Тест: проверьте свои знания о мануле</h2>
-
-      <div class="quiz__meta">
-        <span class="quiz__counter">
-          Вопрос <b id="qCurrent">1</b>/<b id="qTotal">8</b>
-        </span>
-        <div class="quiz__progress">
-          <span class="quiz__bar" id="qBar"></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="quiz__card">
-      <h3 class="quiz__question" id="qText">Загрузка…</h3>
-      <div class="quiz__answers" id="qAnswers"></div>
-
-      <div class="quiz__footer">
-        <button class="quiz__btn" id="qPrev">Назад</button>
-        <button class="quiz__btn quiz__btn--accent" id="qNext" disabled>
-          Дальше
-        </button>
-      </div>
-    </div>
-
-    <div class="quiz__result" id="qResult" hidden>
-      <h3 class="quiz__result-title" id="rTitle"></h3>
-      <p class="quiz__result-text" id="rText"></p>
-      <button class="quiz__btn quiz__btn--accent" id="qRestart">
-        Пройти ещё раз
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label="Открыть меню"
+        aria-expanded="false"
+        aria-controls="mainNav"
+      >
+        ☰
       </button>
-    </div>
-  </div>
-</section>
-  </main>
+    </header>
 
+    <main>
+      <section class="article" id="article">
+        <div class="container">
+          <h1 class="article__title">
+            Manulife: Всё о самой загадочной дикой кошке России
+          </h1>
 
+          <p class="article__lead">
+            Манул, или палласов кот (лат. <em>Felis manul</em>), — это уникальная
+            дикая кошка, чей облик, кажется, застыл во времени. Это невысокий,
+            коренастый и невероятно пушистый хищник, который словно сошёл со
+            страниц древней летописи.
+          </p>
 
-  <footer class="footer" id="footer">
-    <div class="container footer__inner">
-      <div class="footer__col">
-        <div class="footer__brand">
-          <img class="footer__logo" src="img/manul_logo_head_fixed.png" alt="manulife" />
-          <div>
-            <strong class="footer__name">manulife</strong>
-            <span class="footer__tag">Про манула коротко и красиво</span>
+          <div class="article__content">
+            <h2>1. Общая информация</h2>
+
+            <ul>
+              <li>
+                <strong>Внешность и размеры:</strong>
+                Манул — кошка средних размеров, но из-за очень густого и длинного
+                меха кажется массивнее, чем есть на самом деле. Длина тела
+                составляет 50–65 см, хвоста — 20–35 см, вес — от 2 до 5 кг.
+                Отличительные черты — приплюснутая широкая голова, маленькие
+                округлые широко расставленные уши и выразительные жёлтые глаза с
+                круглыми зрачками, которые не сужаются даже при ярком свете.
+                Плотность меха достигает до 9000 волосков на квадратный
+                сантиметр. Окрас светло-серый с охристыми оттенками и эффектом
+                «инея», на щеках заметны тёмные полосы.
+              </li>
+
+              <li>
+                <strong>Места обитания:</strong>
+                В России манул обитает на ограниченных территориях степей и
+                лесостепей. Основной ареал сосредоточен в Республике Алтай
+                (Чуйская и Курайская степи, плато Укок), Республике Тыва (степные
+                котловины) и Забайкальском крае, где он занимает почти всю
+                степную часть. Отдельные группировки отмечены в Бурятии,
+                единичные заходы — на юге Красноярского края и в Иркутской
+                области. Манул предпочитает каменистые степи и горные склоны с
+                россыпями и скалами. Критически важны низкий снежный покров
+                зимой (не более 15–17 см) и наличие нор для укрытия.
+              </li>
+
+              <li>
+                <strong>Питание:</strong>
+                Основу рациона составляют мелкие грызуны и пищухи, не впадающие в
+                спячку: даурская и монгольская пищухи, полёвка Брандта, даурский
+                суслик. Реже манул добывает зайцев, птиц и насекомых. Охотится,
+                скрадывая добычу или карауля её у нор.
+              </li>
+
+              <li>
+                <strong>Образ жизни и размножение:</strong>
+                Манул ведёт одиночный и оседлый образ жизни. Участок самки
+                занимает около 10 км², самца — до 27 км². Убежищами служат
+                расщелины скал и норы сурков, барсуков или лисиц. Гон происходит
+                в феврале–апреле. Беременность длится около 60 дней, и с конца
+                апреля по июнь самка рожает от 2 до 6 котят (редко до 8). Котята
+                начинают самостоятельную жизнь в возрасте 3,5–5 месяцев. В
+                природе манулы живут обычно не более 6 лет.
+              </li>
+
+              <li>
+                <strong>Численность:</strong>
+                Численность манулов в России оценивается от 4,5 до 9,5 тысяч
+                особей, более половины из которых обитает в Забайкальском крае.
+                Популяция подвержена резким колебаниям и сильно зависит от
+                снежности зим и состояния кормовой базы.
+              </li>
+            </ul>
+
+            <h2>2. Интересные факты</h2>
+
+            <ul>
+              <li>
+                <strong>Живое ископаемое:</strong>
+                Манул считается одной из самых древних ветвей семейства кошачьих.
+                Его вид существует практически без изменений уже несколько
+                миллионов лет.
+              </li>
+
+              <li>
+                <strong>Рекордсмен по пушистости:</strong>
+                С плотностью меха до 9000 волосков на квадратный сантиметр манул
+                — абсолютный чемпион по теплоизоляции среди кошек, выдерживающий
+                морозы до −50&nbsp;°C.
+              </li>
+
+              <li>
+                <strong>Мастер маскировки:</strong>
+                Окрас манула идеально сливается со степной травой и скалами,
+                делая его практически невидимым при неподвижности.
+              </li>
+
+              <li>
+                <strong>Вынужденный путешественник:</strong>
+                В голодные годы манулы способны на дальние переходы —
+                зафиксированы перемещения более чем на 170 километров.
+              </li>
+
+              <li>
+                <strong>Уникальные глаза:</strong>
+                Круглые жёлтые глаза придают манулу суровое выражение, хорошо
+                приспособлены для охоты в сумерках, но плохо видят в полной
+                темноте.
+              </li>
+
+              <li>
+                <strong>Скрытность как правило:</strong>
+                Манул невероятно осторожен и скрытен, что делает его крайне
+                трудным объектом для изучения.
+              </li>
+            </ul>
+
+            <h2>3. Причины исчезновения (лимитирующие факторы)</h2>
+
+            <ul>
+              <li>
+                <strong>Глубокий снег:</strong>
+                Снежный покров более 15–20 см лишает манула возможности охотиться
+                и делает его уязвимым для хищников.
+              </li>
+
+              <li>
+                <strong>Депрессия кормовой базы:</strong>
+                Снижение численности пищух и полёвок приводит к голоду и
+                вынужденным миграциям.
+              </li>
+
+              <li>
+                <strong>Хозяйственное освоение степей:</strong>
+                Распашка земель, добыча ресурсов и развитие инфраструктуры
+                уничтожают места обитания манула.
+              </li>
+
+              <li>
+                <strong>Браконьерство и случайная добыча:</strong>
+                Опасность представляют петли и капканы, установленные на других
+                животных.
+              </li>
+
+              <li>
+                <strong>Собаки:</strong>
+                Пастушьи и бродячие собаки являются серьёзными конкурентами и
+                прямыми убийцами манулов.
+              </li>
+
+              <li>
+                <strong>Исторический фактор:</strong>
+                Массовое применение родентицидов в прошлом подрывало кормовую
+                базу и приводило к отравлениям хищников.
+              </li>
+            </ul>
+
+            <h2>4. Охрана вида</h2>
+
+            <ul>
+              <li>
+                <strong>Правовая защита:</strong>
+                Манул занесён в Красную книгу РФ и Приложение II Конвенции СИТЕС.
+              </li>
+
+              <li>
+                <strong>ООПТ:</strong>
+                Значительная часть ареала находится под охраной (Даурский и
+                Сохондинский заповедники, «Убсунурская котловина»,
+                «Сайлюгемский», «Алханай», заказник «Долина дзерена»).
+              </li>
+
+              <li>
+                <strong>Специальные программы:</strong>
+                В Даурском заповеднике реализуется программа мониторинга,
+                реабилитации и экологического просвещения.
+              </li>
+
+              <li>
+                <strong>Необходимые меры:</strong>
+                Расширение ООПТ, контроль выгула собак, борьба с пожарами и
+                петлями, создание центров реабилитации.
+              </li>
+            </ul>
+
+            <div class="article__callout">
+              Манул — хрупкий символ бескрайних степей Азии. Его сохранение
+              зависит не только от работы учёных и государства, но и от нашего
+              общего понимания ценности экосистем.
+            </div>
           </div>
         </div>
+      </section>
 
-        <p class="footer__desc">
-          Учебный проект о самом пушистом и суровом коте планеты.
-        </p>
+      <section class="quiz-section" id="quiz">
+        <div class="quiz container">
+          <div class="quiz__head">
+            <h2 class="quiz__title">Тест: проверьте свои знания о мануле</h2>
+
+            <div class="quiz__meta">
+              <span class="quiz__counter">
+                Вопрос <b id="qCurrent">1</b>/<b id="qTotal">8</b>
+              </span>
+              <div class="quiz__progress">
+                <span class="quiz__bar" id="qBar"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="quiz__card">
+            <h3 class="quiz__question" id="qText">Загрузка…</h3>
+            <div class="quiz__answers" id="qAnswers"></div>
+
+            <div class="quiz__footer">
+              <button class="quiz__btn" id="qPrev" type="button">Назад</button>
+              <button
+                class="quiz__btn quiz__btn--accent"
+                id="qNext"
+                type="button"
+                disabled
+              >
+                Дальше
+              </button>
+            </div>
+          </div>
+
+          <div class="quiz__result" id="qResult" hidden>
+            <h3 class="quiz__result-title" id="rTitle"></h3>
+            <p class="quiz__result-text" id="rText"></p>
+            <button
+              class="quiz__btn quiz__btn--accent"
+              id="qRestart"
+              type="button"
+            >
+              Пройти ещё раз
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" id="footer">
+      <div class="container footer__inner">
+        <div class="footer__col">
+          <div class="footer__brand">
+            <img
+              class="footer__logo"
+              src="img/manul_logo_head_fixed.png"
+              alt="manulife"
+              loading="lazy"
+            />
+            <div>
+              <strong class="footer__name">manulife</strong>
+              <span class="footer__tag">Про манула коротко и красиво</span>
+            </div>
+          </div>
+
+          <p class="footer__desc">
+            Учебный проект о самом пушистом и суровом коте планеты.
+          </p>
+        </div>
+
+        <div class="footer__col">
+          <h4 class="footer__title">Разделы</h4>
+          <ul class="footer__links">
+            <li><a href="index.html#intro">Главная</a></li>
+            <li><a href="index.html#conservation">Охрана</a></li>
+            <li><a href="index.html#quiz">Тест</a></li>
+          </ul>
+
+          <button class="footer__top" id="backToTop" type="button">
+            ↑ Наверх
+          </button>
+        </div>
       </div>
 
-      <div class="footer__col">
-        <h4 class="footer__title">Разделы</h4>
-        <ul class="footer__links">
-          <li><a href="index.html#intro">Главная</a></li>
-          <li><a href="index.html#conservation">Охрана</a></li>
-          <li><a href="index.html#quiz">Тест</a></li>
-        </ul>
-
-        <button class="footer__top" id="backToTop" type="button">↑ Наверх</button>
+      <div class="footer__bottom">
+        <div class="container footer__bottom-inner">
+          <small>© <span id="yearNow"></span> manulife</small>
+          <small>Учебный проект</small>
+        </div>
       </div>
-    </div>
+    </footer>
 
-    <div class="footer__bottom">
-      <div class="container footer__bottom-inner">
-        <small>© <span id="yearNow"></span> manulife</small>
-        <small>Учебный проект</small>
-      </div>
-    </div>
-  </footer>
-
-  <script src="js/main.js"></script>
-</body>
+    <script src="js/main.js" defer></script>
+  </body>
 </html>
-

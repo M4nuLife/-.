@@ -1,127 +1,234 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>manulife — Вход</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>manulife — Вход</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800;900&display=swap"
-    rel="stylesheet"
-  />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="icon" type="image/png" href="img/manul_logo_head_fixed.png" />
-  <link rel="stylesheet" href="css/style.css" />
-</head>
+    <link rel="icon" type="image/png" href="img/manul_logo_head_fixed.png" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
 
-<body>
-  <header class="header header--scrolled" id="header">
-    <a class="header__logo" href="index.html#intro" aria-label="На главную">
-      <img class="header__logo-img" src="img/manul_logo_head_fixed.png" alt="manulife" />
-    </a>
+  <body>
+    <header class="header header--scrolled" id="header">
+      <a class="header__logo" href="index.html#intro" aria-label="На главную">
+        <img
+          class="header__logo-img"
+          src="img/manul_logo_head_fixed.png"
+          alt="manulife"
+          loading="lazy"
+        />
+      </a>
 
-    <nav class="nav" aria-label="Навигация">
-      <ul class="nav__list">
-        <li class="nav__item"><a class="nav__link" href="index.html#intro">Главная</a></li>
-        <li class="nav__item"><a class="nav__link" href="article.html">Статья</a></li>
-      </ul>
-    </nav>
+      <nav class="nav" id="mainNav" aria-label="Навигация">
+        <ul class="nav__list">
+          <li class="nav__item">
+            <a class="nav__link" href="index.html#intro">Главная</a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="article.html">Статья</a>
+          </li>
+        </ul>
+      </nav>
 
-    <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">☰</button>
-  </header>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label="Открыть меню"
+        aria-expanded="false"
+        aria-controls="mainNav"
+      >
+        ☰
+      </button>
+    </header>
 
-  <main>
-    <section class="auth" id="auth">
-      <div class="container">
-        <div class="auth__card">
-          <h1 class="auth__title">Аккаунт manulife</h1>
-          <p class="auth__subtitle">Регистрация и вход через почту</p>
+    <main>
+      <section class="auth" id="auth">
+        <div class="container">
+          <div class="auth__card">
+            <h1 class="auth__title">Аккаунт manulife</h1>
+            <p class="auth__subtitle">Регистрация и вход через почту</p>
 
-          <div class="auth__tabs" role="tablist" aria-label="Авторизация">
-            <button class="auth__tab is-active" type="button" data-tab="register" role="tab">Регистрация</button>
-            <button class="auth__tab" type="button" data-tab="login" role="tab">Вход</button>
+            <div
+              class="auth__tabs"
+              role="tablist"
+              aria-label="Авторизация"
+            >
+              <button
+                class="auth__tab is-active"
+                type="button"
+                data-tab="register"
+                role="tab"
+              >
+                Регистрация
+              </button>
+              <button
+                class="auth__tab"
+                type="button"
+                data-tab="login"
+                role="tab"
+              >
+                Вход
+              </button>
+            </div>
+
+            <form
+              class="auth__form is-active"
+              id="registerForm"
+              data-pane="register"
+            >
+              <label class="auth__field">
+                <span class="auth__label">Почта</span>
+                <input
+                  class="auth__input"
+                  type="email"
+                  id="regEmail"
+                  autocomplete="email"
+                  required
+                />
+              </label>
+
+              <label class="auth__field">
+                <span class="auth__label">Пароль</span>
+                <input
+                  class="auth__input"
+                  type="password"
+                  id="regPass"
+                  autocomplete="new-password"
+                  minlength="6"
+                  required
+                />
+                <span class="auth__hint">Минимум 6 символов</span>
+              </label>
+
+              <button
+                class="auth__btn auth__btn--accent"
+                type="submit"
+              >
+                Создать аккаунт
+              </button>
+
+              <p class="auth__msg" id="regMsg" aria-live="polite"></p>
+            </form>
+
+            <form
+              class="auth__form"
+              id="loginForm"
+              data-pane="login"
+            >
+              <label class="auth__field">
+                <span class="auth__label">Почта</span>
+                <input
+                  class="auth__input"
+                  type="email"
+                  id="logEmail"
+                  autocomplete="email"
+                  required
+                />
+              </label>
+
+              <label class="auth__field">
+                <span class="auth__label">Пароль</span>
+                <input
+                  class="auth__input"
+                  type="password"
+                  id="logPass"
+                  autocomplete="current-password"
+                  required
+                />
+              </label>
+
+              <button
+                class="auth__btn auth__btn--accent"
+                type="submit"
+              >
+                Войти
+              </button>
+
+              <button
+                class="auth__btn"
+                type="button"
+                id="resetBtn"
+              >
+                Сбросить пароль
+              </button>
+
+              <p class="auth__msg" id="logMsg" aria-live="polite"></p>
+            </form>
+
+            <div class="auth__status" id="authStatus" hidden>
+              <p class="auth__ok">
+                Вы вошли как <b id="userEmail"></b>
+              </p>
+
+              <div class="auth__actions">
+                <a class="auth__btn" href="index.html">На главную</a>
+                <button
+                  class="auth__btn auth__btn--danger"
+                  id="logoutBtn"
+                  type="button"
+                >
+                  Выйти
+                </button>
+              </div>
+            </div>
           </div>
+        </div>
+      </section>
+    </main>
 
-          <form class="auth__form is-active" id="registerForm" data-pane="register">
-            <label class="auth__field">
-              <span class="auth__label">Почта</span>
-              <input class="auth__input" type="email" id="regEmail" autocomplete="email" required />
-            </label>
-
-            <label class="auth__field">
-              <span class="auth__label">Пароль</span>
-              <input class="auth__input" type="password" id="regPass" autocomplete="new-password" minlength="6" required />
-              <span class="auth__hint">Минимум 6 символов</span>
-            </label>
-
-            <button class="auth__btn auth__btn--accent" type="submit">Создать аккаунт</button>
-            <p class="auth__msg" id="regMsg" aria-live="polite"></p>
-          </form>
-
-          <form class="auth__form" id="loginForm" data-pane="login">
-            <label class="auth__field">
-              <span class="auth__label">Почта</span>
-              <input class="auth__input" type="email" id="logEmail" autocomplete="email" required />
-            </label>
-
-            <label class="auth__field">
-              <span class="auth__label">Пароль</span>
-              <input class="auth__input" type="password" id="logPass" autocomplete="current-password" required />
-            </label>
-
-            <button class="auth__btn auth__btn--accent" type="submit">Войти</button>
-
-            <button class="auth__btn" type="button" id="resetBtn">Сбросить пароль</button>
-            <p class="auth__msg" id="logMsg" aria-live="polite"></p>
-          </form>
-
-          <div class="auth__status" id="authStatus" hidden>
-            <p class="auth__ok">Вы вошли как <b id="userEmail"></b></p>
-            <div class="auth__actions">
-              <a class="auth__btn" href="index.html">На главную</a>
-              <button class="auth__btn auth__btn--danger" id="logoutBtn" type="button">Выйти</button>
+    <footer class="footer" id="footer">
+      <div class="container footer__inner">
+        <div class="footer__col">
+          <div class="footer__brand">
+            <img
+              class="footer__logo"
+              src="img/manul_logo_head_fixed.png"
+              alt="manulife"
+              loading="lazy"
+            />
+            <div>
+              <strong class="footer__name">manulife</strong>
+              <span class="footer__tag">Про манула коротко и красиво</span>
             </div>
           </div>
 
+          <p class="footer__desc">Учебный проект.</p>
+        </div>
+
+        <div class="footer__col">
+          <h4 class="footer__title">Навигация</h4>
+          <ul class="footer__links">
+            <li><a href="index.html#intro">Главная</a></li>
+            <li><a href="article.html">Статья</a></li>
+          </ul>
+
+          <button
+            class="footer__top"
+            id="backToTop"
+            type="button"
+          >
+            ↑ Наверх
+          </button>
         </div>
       </div>
-    </section>
-  </main>
 
-  <footer class="footer" id="footer">
-    <div class="container footer__inner">
-      <div class="footer__col">
-        <div class="footer__brand">
-          <img class="footer__logo" src="img/manul_logo_head_fixed.png" alt="manulife" />
-          <div>
-            <strong class="footer__name">manulife</strong>
-            <span class="footer__tag">Про манула коротко и красиво</span>
-          </div>
+      <div class="footer__bottom">
+        <div class="container footer__bottom-inner">
+          <small>© <span id="yearNow"></span> manulife</small>
+          <small>Учебный проект</small>
         </div>
-        <p class="footer__desc">Учебный проект.</p>
       </div>
+    </footer>
 
-      <div class="footer__col">
-        <h4 class="footer__title">Навигация</h4>
-        <ul class="footer__links">
-          <li><a href="index.html#intro">Главная</a></li>
-          <li><a href="article.html">Статья</a></li>
-        </ul>
-        <button class="footer__top" id="backToTop" type="button">↑ Наверх</button>
-      </div>
-    </div>
-
-    <div class="footer__bottom">
-      <div class="container footer__bottom-inner">
-        <small>© <span id="yearNow"></span> manulife</small>
-        <small>Учебный проект</small>
-      </div>
-    </div>
-  </footer>
-
-  <script type="module" src="js/auth.js"></script>
-  <script src="js/main.js"></script>
-</body>
+    <script type="module" src="js/auth.js"></script>
+    <script src="js/main.js" defer></script>
+  </body>
 </html>

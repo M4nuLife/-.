@@ -1,143 +1,197 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>manulife — карта</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>manulife — карта</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800;900&display=swap"
-    rel="stylesheet"
-  />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="icon" type="image/png" href="img/manul_logo_head_fixed.png" />
-  <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" type="image/png" href="img/manul_logo_head_fixed.png" />
+    <link rel="stylesheet" href="css/style.css" />
 
-  <!-- Leaflet CSS (для карты) -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
-</head>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+  </head>
 
-<body>
-  <!-- HEADER (такой же как на главной) -->
-  <header class="header" id="header">
-    <a class="header__logo" href="index.html#intro" aria-label="На главную">
-      <img
-        class="header__logo-img"
-        src="img/manul_logo_head_fixed.png"
-        alt="manulife"
-      />
-    </a>
+  <body>
+    <header class="header" id="header">
+      <a class="header__logo" href="index.html#intro" aria-label="На главную">
+        <img
+          class="header__logo-img"
+          src="img/manul_logo_head_fixed.png"
+          alt="manulife"
+          loading="lazy"
+        />
+      </a>
 
-    <nav class="nav" aria-label="Навигация">
-      <ul class="nav__list">
-        <li class="nav__item">
-          <a class="nav__link" href="index.html#intro">Знакомство</a>
-        </li>
-        <li class="nav__item">
-          <a class="nav__link" href="index.html#appearance">Внешность</a>
-        </li>
-        <li class="nav__item">
-          <a class="nav__link" href="index.html#conservation">Охрана</a>
-        </li>
-        <li class="nav__item">
-          <a class="nav__link" href="map.html">Карта</a>
-        </li>
-      </ul>
-    </nav>
+      <nav class="nav" id="mainNav" aria-label="Навигация">
+        <ul class="nav__list">
+          <li class="nav__item">
+            <a class="nav__link" href="index.html#intro">Знакомство</a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="index.html#appearance">Внешность</a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="index.html#conservation">Охрана</a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="map.html">Карта</a>
+          </li>
+        </ul>
+      </nav>
 
-    <button
-      class="nav-toggle"
-      type="button"
-      aria-label="Открыть меню"
-      aria-expanded="false"
-    >
-      ☰
-    </button>
-  </header>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label="Открыть меню"
+        aria-expanded="false"
+        aria-controls="mainNav"
+      >
+        ☰
+      </button>
+    </header>
 
-  <!-- MAIN -->
-  <main class="map-page">
-    <section class="map-section">
-      <div class="container">
-        <header class="map-head">
-          <h1 class="map-title">Карта манулов</h1>
-          <p class="map-subtitle">
-            Учебная карта распространения манула: ареал, заповедники и зоопарки.
-            Нажмите на метку, чтобы увидеть информацию.
-          </p>
-        </header>
+    <main class="map-page">
+      <section class="map-section">
+        <div class="container">
+          <header class="map-head">
+            <h1 class="map-title">Карта манулов</h1>
+            <p class="map-subtitle">
+              Учебная карта распространения манула: ареал, заповедники и зоопарки.
+              Нажмите на метку, чтобы увидеть информацию.
+            </p>
+          </header>
 
-        <!-- Панель управления слоями -->
-        <div class="map-panel">
-          <button class="chip is-active" data-layer="range" type="button">
-            Ареал
-          </button>
-          <button class="chip is-active" data-layer="reserves" type="button">
-            Заповедники
-          </button>
-          <button class="chip is-active" data-layer="zoos" type="button">
-            Зоопарки
-          </button>
-        </div>
-      </div>
+          <div class="map-panel">
+            <button class="chip is-active" data-layer="range" type="button">
+              Ареал
+            </button>
+            <button
+              class="chip is-active"
+              data-layer="reserves"
+              type="button"
+            >
+              Заповедники
+              <span class="chip__count" id="countReserves">0</span>
+            </button>
+            <button
+              class="chip is-active"
+              data-layer="zoos"
+              type="button"
+            >
+              Зоопарки
+              <span class="chip__count" id="countZoos">0</span>
+            </button>
 
-      <!-- Контейнер карты -->
-      <div id="map" aria-label="Карта манулов"></div>
-    </section>
-  </main>
+            <button
+              class="chip chip--action"
+              id="fitAll"
+              type="button"
+            >
+              Показать всё
+            </button>
+          </div>
 
-  <!-- FOOTER (можно использовать твой же) -->
-  <footer class="footer">
-    <div class="container footer__inner">
-      <div class="footer__col">
-        <div class="footer__brand">
-          <img
-            class="footer__logo"
-            src="img/manul_logo_head_fixed.png"
-            alt="manulife"
-          />
-          <div>
-            <strong class="footer__name">manulife</strong>
-            <span class="footer__tag">Про манула коротко и красиво</span>
+          <div class="map-search">
+            <label
+              class="map-search__label"
+              for="mapSearchInput"
+            >
+              Поиск по объектам
+            </label>
+
+            <div class="map-search__row">
+              <input
+                class="map-search__input"
+                id="mapSearchInput"
+                type="text"
+                placeholder="Начните вводить: Москва, Даурский, Praha…"
+                autocomplete="off"
+              />
+
+              <button
+                class="map-search__clear"
+                id="mapSearchClear"
+                type="button"
+                aria-label="Очистить поиск"
+              >
+                ×
+              </button>
+            </div>
+
+            <div class="map-search__hint" id="mapSearchHint">
+              В списке: <span id="mapSearchTotal">0</span> объектов
+            </div>
+
+            <div
+              class="map-search__list"
+              id="mapSearchList"
+              role="listbox"
+              aria-label="Результаты поиска"
+            ></div>
           </div>
         </div>
 
-        <p class="footer__desc">
-          Учебный проект о самом пушистом и суровом коте планеты.
-        </p>
+        <div id="map" aria-label="Карта манулов"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__inner">
+        <div class="footer__col">
+          <div class="footer__brand">
+            <img
+              class="footer__logo"
+              src="img/manul_logo_head_fixed.png"
+              alt="manulife"
+              loading="lazy"
+            />
+            <div>
+              <strong class="footer__name">manulife</strong>
+              <span class="footer__tag">Про манула коротко и красиво</span>
+            </div>
+          </div>
+
+          <p class="footer__desc">
+            Учебный проект о самом пушистом и суровом коте планеты.
+          </p>
+        </div>
+
+        <div class="footer__col">
+          <h4 class="footer__title">Разделы</h4>
+          <ul class="footer__links">
+            <li><a href="index.html#intro">Знакомство</a></li>
+            <li><a href="index.html#appearance">Внешность</a></li>
+            <li><a href="index.html#conservation">Охрана</a></li>
+            <li><a href="map.html">Карта</a></li>
+          </ul>
+
+          <button class="footer__top" type="button">
+            ↑ Наверх
+          </button>
+        </div>
       </div>
 
-      <div class="footer__col">
-        <h4 class="footer__title">Разделы</h4>
-        <ul class="footer__links">
-          <li><a href="index.html#intro">Знакомство</a></li>
-          <li><a href="index.html#appearance">Внешность</a></li>
-          <li><a href="index.html#conservation">Охрана</a></li>
-          <li><a href="map.html">Карта</a></li>
-        </ul>
-
-        <button class="footer__top" type="button">↑ Наверх</button>
+      <div class="footer__bottom">
+        <div class="container footer__bottom-inner">
+          <small>© manulife</small>
+          <small>Учебный проект</small>
+        </div>
       </div>
-    </div>
+    </footer>
 
-    <div class="footer__bottom">
-      <div class="container footer__bottom-inner">
-        <small>© manulife</small>
-        <small>Учебный проект</small>
-      </div>
-    </div>
-  </footer>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <!-- Твой JS -->
-  <script src="js/map.js"></script>
-  <script src="js/main.js"></script>
-</body>
+    <script src="js/map.js"></script>
+    <script src="js/main.js" defer></script>
+  </body>
 </html>
