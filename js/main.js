@@ -3,12 +3,12 @@
 
   /* ===== Utils ===== */
 
-  const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+  const Utils = (window.Manul && window.Manul.utils) || {};
+  const $ = Utils.$ || ((sel, root = document) => root.querySelector(sel));
+  const $$ = Utils.$$ || ((sel, root = document) => Array.from(root.querySelectorAll(sel)));
 
   const HEADER_SCROLL_Y = 20;
   const SCROLL_EXTRA_OFFSET = 20;
-
   /* ===== Header / Nav ===== */
 
   function initHeaderNav() {
@@ -392,13 +392,25 @@
 
   /* ===== Init ===== */
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const headerApi = initHeaderNav();
-    initSmoothScroll(headerApi);
-    initRevealOnScroll();
-    initAppearancePanel();
-    initFooter();
-    initQuiz();
-    initPhotoStripAutoScroll();
-  });
+  async function initApp() {
+    try {
+      // CMS: load content from JSON (works on GitHub Pages)
+      if (window.CMS) {
+        const cmsData = await window.CMS.load('./data/site.json');
+        window.CMS.apply(document, cmsData);
+      }
+
+      const headerApi = initHeaderNav();
+      initSmoothScroll(headerApi);
+      initRevealOnScroll();
+      initAppearancePanel();
+      initFooter();
+      initQuiz();
+      initPhotoStripAutoScroll();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initApp);
 })();
