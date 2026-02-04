@@ -1,349 +1,459 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>manulife</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-
-    <link rel="icon" type="image/png" href="img/manul_logo_head_fixed.png" />
-    <link rel="stylesheet" href="css/style.css" />
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>
+      manulife
+    </title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@600;700;800;900&amp;display=swap" rel="stylesheet"/>
+    <link href="img/manul_logo_head_fixed.png" rel="icon" type="image/png"/>
+    <link href="css/style.css" rel="stylesheet"/>
   </head>
-
   <body>
     <header class="header" id="header">
-      <a class="header__logo" href="#intro" aria-label="На главную">
-        <img
-          class="header__logo-img"
-          src="img/manul_logo_head_fixed.png"
-          alt="manulife"
-          loading="lazy"
-        />
+      <a aria-label="На главную" class="header__logo" href="#intro">
+        <img alt="manulife" class="header__logo-img" loading="lazy" src="img/manul_logo_head_fixed.png"/>
       </a>
-
-      <nav class="nav" id="mainNav" aria-label="Главная навигация">
+      <nav aria-label="Главная навигация" class="nav" id="mainNav">
         <ul class="nav__list">
-          <li class="nav__item"><a class="nav__link" href="#intro">Знакомство</a></li>
-          <li class="nav__item"><a class="nav__link" href="#appearance">Внешность</a></li>
-          <li class="nav__item"><a class="nav__link" href="#conservation">Охрана</a></li>
-          <li class="nav__item"><a class="nav__link" href="map.html">Карта</a></li>
+          <li class="nav__item">
+            <a class="nav__link" href="#intro">
+              Знакомство
+            </a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="#appearance">
+              Внешность
+            </a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="#conservation">
+              Охрана
+            </a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="map.html">
+              Карта
+            </a>
+          </li>
         </ul>
       </nav>
-
       <div class="auth-actions">
-        <button class="auth-btn" id="openAuth" type="button">Аккаунт</button>
-        <span class="auth-nick" id="authNick" hidden></span>
-        <button class="auth-btn" id="logoutBtn" type="button" hidden>Выйти</button>
+        <button class="auth-btn" id="openAuth" type="button">
+          Аккаунт
+        </button>
+        <span class="auth-nick" hidden="" id="authNick">
+        </span>
+        <button class="auth-btn" hidden="" id="logoutBtn" type="button">
+          Выйти
+        </button>
       </div>
-
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-label="Открыть меню"
-        aria-expanded="false"
-        aria-controls="mainNav"
-      >
+      <button aria-controls="mainNav" aria-expanded="false" aria-label="Открыть меню" class="nav-toggle" type="button">
         ☰
       </button>
     </header>
-
     <main>
       <section class="hero" id="intro">
-        <video class="hero__video" autoplay muted loop playsinline>
-          <source src="video/video_2026-01-14_14-47-48.mp4" type="video/mp4" />
+        <video autoplay="" class="hero__video" loop="" muted="" playsinline="">
+          <source src="video/video_2026-01-14_14-47-48.mp4" type="video/mp4"/>
         </video>
-
-        <div class="hero__overlay"></div>
-
+        <div class="hero__overlay">
+        </div>
         <div class="hero__content container">
           <div class="hero__text">
-            <h1 class="hero__title">МАНУЛ</h1>
-            <p class="hero__subtitle">Самый пушистый и суровый кот планеты</p>
-
+            <h1 class="hero__title" data-cms-text="home.hero.title">
+              МАНУЛ
+            </h1>
+            <p class="hero__subtitle" data-cms-text="home.hero.subtitle">
+              Самый пушистый и суровый кот планеты
+            </p>
             <div class="hero-stats">
               <div class="hero-stat">
-                <div class="hero-stat__label">Манулов</div>
-                <div class="hero-stat__value">58000</div>
+                <div class="hero-stat__label" data-cms-text="home.hero.stats.0.label">
+                  Манулов
+                </div>
+                <div class="hero-stat__value" data-cms-text="home.hero.stats.0.value">
+                  58000
+                </div>
               </div>
               <div class="hero-stat">
-                <div class="hero-stat__label">Зоопарков</div>
-                <div class="hero-stat__value">150</div>
+                <div class="hero-stat__label" data-cms-text="home.hero.stats.1.label">
+                  Зоопарков
+                </div>
+                <div class="hero-stat__value" data-cms-text="home.hero.stats.1.value">
+                  150
+                </div>
               </div>
               <div class="hero-stat">
-                <div class="hero-stat__label">Заповедников</div>
-                <div class="hero-stat__value">12</div>
+                <div class="hero-stat__label" data-cms-text="home.hero.stats.2.label">
+                  Заповедников
+                </div>
+                <div class="hero-stat__value" data-cms-text="home.hero.stats.2.value">
+                  12
+                </div>
               </div>
               <div class="hero-stat">
-                <div class="hero-stat__label">Программ защиты</div>
-                <div class="hero-stat__value">5</div>
+                <div class="hero-stat__label" data-cms-text="home.hero.stats.3.label">
+                  Программ защиты
+                </div>
+                <div class="hero-stat__value" data-cms-text="home.hero.stats.3.value">
+                  5
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      <div class="wave-separator" aria-hidden="true">
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-          <path
-            d="M0,48 C180,96 360,0 540,48 C720,96 900,24 1080,48 C1260,72 1440,48 1440,48 L1440,120 L0,120 Z"
-          />
+      <div aria-hidden="true" class="wave-separator">
+        <svg preserveaspectratio="none" viewbox="0 0 1440 120">
+          <path d="M0,48 C180,96 360,0 540,48 C720,96 900,24 1080,48 C1260,72 1440,48 1440,48 L1440,120 L0,120 Z">
+          </path>
         </svg>
       </div>
-
       <section class="appearance" id="appearance">
-        <div class="appearance__bg" aria-hidden="true"></div>
-
+        <div aria-hidden="true" class="appearance__bg">
+        </div>
         <div class="appearance__panel">
           <div class="appearance__content container">
-            <h2 class="appearance__title">Несколько фактов</h2>
-
+            <h2 class="appearance__title" data-cms-text="home.facts.title">
+              Несколько фактов
+            </h2>
             <ul class="appearance__list">
-              <li>Древний вид: манул — один из самых древних и малоизученных диких котов планеты.</li>
-              <li>Густой мех: обладает исключительно густым и длинным мехом для защиты от холода.</li>
-              <li>Суровый ареал: обитает в холодных степях, полупустынях и высокогорьях.</li>
-              <li>Одиночный образ жизни: встречается с сородичами в основном в сезон размножения.</li>
-              <li>Уникальный взгляд: круглые зрачки не сужаются в «щелочки».</li>
-              <li>Тактика засады: охотится из укрытия, не рассчитан на долгий бег.</li>
+              <li data-cms-text="home.facts.items.0">
+                Древний вид: манул — один из самых древних и малоизученных диких котов планеты.
+              </li>
+              <li data-cms-text="home.facts.items.1">
+                Густой мех: обладает исключительно густым и длинным мехом для защиты от холода.
+              </li>
+              <li data-cms-text="home.facts.items.2">
+                Суровый ареал: обитает в холодных степях, полупустынях и высокогорьях.
+              </li>
+              <li data-cms-text="home.facts.items.3">
+                Одиночный образ жизни: встречается с сородичами в основном в сезон размножения.
+              </li>
+              <li data-cms-text="home.facts.items.4">
+                Уникальный взгляд: круглые зрачки не сужаются в «щелочки».
+              </li>
+              <li data-cms-text="home.facts.items.5">
+                Тактика засады: охотится из укрытия, не рассчитан на долгий бег.
+              </li>
             </ul>
           </div>
         </div>
       </section>
-
-      <div class="wave-separator" aria-hidden="true">
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-          <path
-            d="M0,48 C180,96 360,0 540,48 C720,96 900,24 1080,48 C1260,72 1440,48 1440,48 L1440,120 L0,120 Z"
-          />
+      <div aria-hidden="true" class="wave-separator">
+        <svg preserveaspectratio="none" viewbox="0 0 1440 120">
+          <path d="M0,48 C180,96 360,0 540,48 C720,96 900,24 1080,48 C1260,72 1440,48 1440,48 L1440,120 L0,120 Z">
+          </path>
         </svg>
       </div>
-
       <section class="conservation" id="conservation">
         <div class="container">
-          <h2 class="conservation__title">Охрана манулов</h2>
-
-          <p class="conservation__description">
+          <h2 class="conservation__title" data-cms-text="home.conservation.title">
+            Охрана манулов
+          </h2>
+          <p class="conservation__description" data-cms-text="home.conservation.description">
             Манул занесён в Красную книгу. Основные угрозы связаны с деятельностью человека и сокращением
-            естественной среды обитания.
+                        естественной среды обитания.
           </p>
-
           <div class="conservation__items">
             <article class="conservation__item">
-              <h3 class="conservation__item-title">Красная книга</h3>
+              <h3 class="conservation__item-title" data-cms-text="home.conservation.cards.0.title">
+                Красная книга
+              </h3>
               <ul class="conservation__list">
-                <li>Охраняется на международном уровне и внесён в списки охраняемых видов во многих странах</li>
-                <li>Упоминается в Приложении II Конвенции CITES</li>
-                <li>Любые торговые операции с манулами строго регулируются</li>
-                <li>Под охраной с 1975 года</li>
-                <li>Охраняется в Монголии, России, Китае, Казахстане</li>
+                <li data-cms-text="home.conservation.cards.0.items.0">
+                  Охраняется на международном уровне и внесён в списки охраняемых видов во многих странах
+                </li>
+                <li data-cms-text="home.conservation.cards.0.items.1">
+                  Упоминается в Приложении II Конвенции CITES
+                </li>
+                <li data-cms-text="home.conservation.cards.0.items.2">
+                  Любые торговые операции с манулами строго регулируются
+                </li>
+                <li data-cms-text="home.conservation.cards.0.items.3">
+                  Под охраной с 1975 года
+                </li>
+                <li data-cms-text="home.conservation.cards.0.items.4">
+                  Охраняется в Монголии, России, Китае, Казахстане
+                </li>
               </ul>
             </article>
-
             <article class="conservation__item">
-              <h3 class="conservation__item-title">Основные угрозы</h3>
+              <h3 class="conservation__item-title" data-cms-text="home.conservation.cards.1.title">
+                Основные угрозы
+              </h3>
               <ul class="conservation__list">
-                <li>Сокращение среды обитания из-за сельского хозяйства, добычи ресурсов и строительства</li>
-                <li>Браконьерство и незаконный отлов</li>
-                <li>Гибель в капканах и петлях, поставленных на других животных</li>
-                <li>Снижение кормовой базы из-за уменьшения численности грызунов</li>
-                <li>Климатические изменения в степных и высокогорных экосистемах</li>
+                <li data-cms-text="home.conservation.cards.1.items.0">
+                  Сокращение среды обитания из-за сельского хозяйства, добычи ресурсов и строительства
+                </li>
+                <li data-cms-text="home.conservation.cards.1.items.1">
+                  Браконьерство и незаконный отлов
+                </li>
+                <li data-cms-text="home.conservation.cards.1.items.2">
+                  Гибель в капканах и петлях, поставленных на других животных
+                </li>
+                <li data-cms-text="home.conservation.cards.1.items.3">
+                  Снижение кормовой базы из-за уменьшения численности грызунов
+                </li>
+                <li data-cms-text="home.conservation.cards.1.items.4">
+                  Климатические изменения в степных и высокогорных экосистемах
+                </li>
               </ul>
             </article>
-
             <article class="conservation__item">
-              <h3 class="conservation__item-title">Меры защиты</h3>
+              <h3 class="conservation__item-title" data-cms-text="home.conservation.cards.2.title">
+                Меры защиты
+              </h3>
               <ul class="conservation__list">
-                <li>Программы разведения в центрах и зоопарках и специализированных центрах с последующей реинтродукцией</li>
-                <li>Охрана в заповедниках и нацпарках где создабются безопасные условия для жизни и размножения</li>
-                <li>Мониторинг популяций и научные исследования для разработки эффективных стратегий охраны</li>
-                <li>Экопросвещение и работа с местным населением для снижения конфликтов и браконьества</li>
+                <li data-cms-text="home.conservation.cards.2.items.0">
+                  Программы разведения в центрах и зоопарках и специализированных центрах с последующей реинтродукцией
+                </li>
+                <li data-cms-text="home.conservation.cards.2.items.1">
+                  Охрана в заповедниках и нацпарках где создабются безопасные условия для жизни и размножения
+                </li>
+                <li data-cms-text="home.conservation.cards.2.items.2">
+                  Мониторинг популяций и научные исследования для разработки эффективных стратегий охраны
+                </li>
+                <li data-cms-text="home.conservation.cards.2.items.3">
+                  Экопросвещение и работа с местным населением для снижения конфликтов и браконьества
+                </li>
               </ul>
             </article>
           </div>
         </div>
       </section>
-
-      <div class="wave-separator" aria-hidden="true">
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-          <path
-            d="M0,48 C180,96 360,0 540,48 C720,96 900,24 1080,48 C1260,72 1440,48 1440,48 L1440,120 L0,120 Z"
-          />
+      <div aria-hidden="true" class="wave-separator">
+        <svg preserveaspectratio="none" viewbox="0 0 1440 120">
+          <path d="M0,48 C180,96 360,0 540,48 C720,96 900,24 1080,48 C1260,72 1440,48 1440,48 L1440,120 L0,120 Z">
+          </path>
         </svg>
       </div>
-
       <section class="meaning">
         <div class="container meaning__inner">
-          <h2 class="meaning__title">Почему манул — больше, чем просто редкий кот</h2>
-
+          <h2 class="meaning__title">
+            Почему манул — больше, чем просто редкий кот
+          </h2>
           <div class="meaning__text">
             <p>
               Манул — это не просто редкое животное и не очередной обитатель Красной книги. Он является
-              <strong>индикатором здоровья степных и горных экосистем Евразии</strong>.
+              <strong>
+                индикатором здоровья степных и горных экосистем Евразии
+              </strong>
+              .
             </p>
-
             <p>
               Исчезновение манула — тревожный сигнал: нарушается баланс, исчезают пищухи, усиливается давление
-              человека, разрушаются укрытия.
+                            человека, разрушаются укрытия.
             </p>
-
             <p>
-              Сохраняя манула, человек сохраняет <strong>целые ландшафты</strong>, которые формировались миллионы лет.
+              Сохраняя манула, человек сохраняет
+              <strong>
+                целые ландшафты
+              </strong>
+              , которые формировались миллионы лет.
             </p>
           </div>
-
           <div class="meaning__cta">
-            <a class="btn-main btn-main--outline" href="article.html">Полная история манула</a>
+            <a class="btn-main btn-main--outline" href="article.html">
+              Полная история манула
+            </a>
           </div>
         </div>
       </section>
-
-      <section class="photo-strip" aria-label="Галерея манула">
+      <section aria-label="Галерея манула" class="photo-strip">
         <div class="photo-strip__inner container">
-          <h3 class="photo-strip__title">Манул в кадре</h3>
+          <h3 class="photo-strip__title">
+            Манул в кадре
+          </h3>
         </div>
-
         <div class="photo-strip__track-wrap">
           <div class="photo-strip__track" role="list">
             <div class="photo-strip__item" role="listitem">
-              <img src="img/istockphoto-487021595-1024x1024.png" alt="Манул на ветке" loading="lazy" />
+              <img alt="Манул на ветке" loading="lazy" src="img/istockphoto-487021595-1024x1024.png"/>
             </div>
             <div class="photo-strip__item" role="listitem">
-              <img src="img/istockphoto-847338814-1024x1024.png" alt="Манул крупным планом" loading="lazy" />
+              <img alt="Манул крупным планом" loading="lazy" src="img/istockphoto-847338814-1024x1024.png"/>
             </div>
             <div class="photo-strip__item" role="listitem">
-              <img src="img/istockphoto-930402040-1024x1024.png" alt="Манул в природе" loading="lazy" />
+              <img alt="Манул в природе" loading="lazy" src="img/istockphoto-930402040-1024x1024.png"/>
             </div>
             <div class="photo-strip__item" role="listitem">
-              <img src="img/istockphoto-1039133500-1024x1024.png" alt="Манул на камнях" loading="lazy" />
+              <img alt="Манул на камнях" loading="lazy" src="img/istockphoto-1039133500-1024x1024.png"/>
             </div>
             <div class="photo-strip__item" role="listitem">
-              <img src="img/istockphoto-1251704886-1024x1024.png" alt="Манул зимой" loading="lazy" />
+              <img alt="Манул зимой" loading="lazy" src="img/istockphoto-1251704886-1024x1024.png"/>
             </div>
             <div class="photo-strip__item" role="listitem">
-              <img src="img/istockphoto-1367957859-1024x1024.png" alt="Манул в траве" loading="lazy" />
+              <img alt="Манул в траве" loading="lazy" src="img/istockphoto-1367957859-1024x1024.png"/>
             </div>
             <div class="photo-strip__item" role="listitem">
-              <img src="img/istockphoto-1480630462-1024x1024.png" alt="Манул в тени" loading="lazy" />
+              <img alt="Манул в тени" loading="lazy" src="img/istockphoto-1480630462-1024x1024.png"/>
             </div>
             <div class="photo-strip__item" role="listitem">
-              <img src="img/istockphoto-1627309044-1024x1024.png" alt="Манул на земле" loading="lazy" />
+              <img alt="Манул на земле" loading="lazy" src="img/istockphoto-1627309044-1024x1024.png"/>
             </div>
             <div class="photo-strip__item" role="listitem">
-              <img src="img/istockphoto-1628114356-1024x1024.png" alt="Манул в степи" loading="lazy" />
+              <img alt="Манул в степи" loading="lazy" src="img/istockphoto-1628114356-1024x1024.png"/>
             </div>
             <div class="photo-strip__item" role="listitem">
-              <img src="img/istockphoto-1647230094-1024x1024.png" alt="Манул в заповеднике" loading="lazy" />
+              <img alt="Манул в заповеднике" loading="lazy" src="img/istockphoto-1647230094-1024x1024.png"/>
             </div>
             <div class="photo-strip__item" role="listitem">
-              <img src="img/istockphoto-1798586105-1024x1024.png" alt="Манул — портрет" loading="lazy" />
+              <img alt="Манул — портрет" loading="lazy" src="img/istockphoto-1798586105-1024x1024.png"/>
             </div>
             <div class="photo-strip__item" role="listitem">
-              <img src="img/istockphoto-2016459717-1024x1024.png" alt="Манул у дерева" loading="lazy" />
+              <img alt="Манул у дерева" loading="lazy" src="img/istockphoto-2016459717-1024x1024.png"/>
             </div>
           </div>
         </div>
       </section>
     </main>
-
     <footer class="footer" id="footer">
       <div class="container footer__inner">
         <div class="footer__col">
           <div class="footer__brand">
-            <img
-              class="footer__logo"
-              src="img/manul_logo_head_fixed.png"
-              alt="manulife"
-              loading="lazy"
-            />
+            <img alt="manulife" class="footer__logo" loading="lazy" src="img/manul_logo_head_fixed.png"/>
             <div>
-              <strong class="footer__name">manulife</strong>
-              <span class="footer__tag">Про манула коротко и красиво</span>
+              <strong class="footer__name">
+                manulife
+              </strong>
+              <span class="footer__tag">
+                Про манула коротко и красиво
+              </span>
             </div>
           </div>
-
-          <p class="footer__desc">Учебный проект о самом пушистом и суровом коте планеты.</p>
+          <p class="footer__desc">
+            Учебный проект о самом пушистом и суровом коте планеты.
+          </p>
         </div>
-
         <div class="footer__col">
-          <h4 class="footer__title">Разделы</h4>
+          <h4 class="footer__title">
+            Разделы
+          </h4>
           <ul class="footer__links">
-            <li><a href="#intro">Знакомство</a></li>
-            <li><a href="#appearance">Внешность</a></li>
-            <li><a href="#conservation">Охрана</a></li>
-            <li><a href="article.html#quiz">Тест</a></li>
-            <li><a href="article.html">Статья</a></li>
+            <li>
+              <a href="#intro">
+                Знакомство
+              </a>
+            </li>
+            <li>
+              <a href="#appearance">
+                Внешность
+              </a>
+            </li>
+            <li>
+              <a href="#conservation">
+                Охрана
+              </a>
+            </li>
+            <li>
+              <a href="article.html#quiz">
+                Тест
+              </a>
+            </li>
+            <li>
+              <a href="article.html">
+                Статья
+              </a>
+            </li>
           </ul>
-
-          <button class="footer__top" id="backToTop" type="button">↑ Наверх</button>
+          <button class="footer__top" id="backToTop" type="button">
+            ↑ Наверх
+          </button>
         </div>
       </div>
-
       <div class="footer__bottom">
         <div class="container footer__bottom-inner">
-          <small>© <span id="yearNow"></span> manulife</small>
-          <small>Учебный проект</small>
+          <small>
+            ©
+            <span id="yearNow">
+            </span>
+            manulife
+          </small>
+          <small>
+            Учебный проект
+          </small>
         </div>
       </div>
     </footer>
-
-    <div class="auth-modal" id="authModal" aria-hidden="true">
-      <div class="auth-modal__overlay" data-close></div>
-
-      <div class="auth-modal__dialog" role="dialog" aria-modal="true" aria-label="Аккаунт">
-        <button class="auth-modal__close" type="button" data-close aria-label="Закрыть">×</button>
-
-        <h2 class="auth-modal__title">Аккаунт</h2>
-
+    <div aria-hidden="true" class="auth-modal" id="authModal">
+      <div class="auth-modal__overlay" data-close="">
+      </div>
+      <div aria-label="Аккаунт" aria-modal="true" class="auth-modal__dialog" role="dialog">
+        <button aria-label="Закрыть" class="auth-modal__close" data-close="" type="button">
+          ×
+        </button>
+        <h2 class="auth-modal__title" data-cms-text="home.authModal.title">
+          Аккаунт
+        </h2>
         <div class="auth-modal__tabs">
-          <button class="auth-modal__tab is-active" type="button" data-tab="register">Регистрация</button>
-          <button class="auth-modal__tab" type="button" data-tab="login">Вход</button>
+          <button class="auth-modal__tab is-active" data-cms-text="home.authModal.tabs.register" data-tab="register" type="button">
+            Регистрация
+          </button>
+          <button class="auth-modal__tab" data-cms-text="home.authModal.tabs.login" data-tab="login" type="button">
+            Вход
+          </button>
         </div>
-
-        <form class="auth-modal__form is-active" id="registerFormModal" data-pane="register">
-          <label class="auth-modal__label">
-            <span>Почта</span>
-            <input id="regEmailModal" type="email" autocomplete="email" required />
+        <form class="auth-modal__form is-active" data-pane="register" id="registerFormModal">
+          <label class="auth-modal__label" data-cms-text="home.authModal.labels.email">
+            <span>
+              Почта
+            </span>
+            <input autocomplete="email" id="regEmailModal" required="" type="email"/>
           </label>
-
-          <label class="auth-modal__label">
-            <span>Никнейм</span>
-            <input id="regNickModal" type="text" autocomplete="nickname" placeholder="Например: SteppeManul" />
+          <label class="auth-modal__label" data-cms-text="home.authModal.labels.nickname">
+            <span>
+              Никнейм
+            </span>
+            <input autocomplete="nickname" id="regNickModal" placeholder="Например: SteppeManul" type="text"/>
           </label>
-
-          <label class="auth-modal__label">
-            <span>Пароль</span>
-            <input id="regPassModal" type="password" autocomplete="new-password" minlength="6" required />
+          <label class="auth-modal__label" data-cms-text="home.authModal.labels.password">
+            <span>
+              Пароль
+            </span>
+            <input autocomplete="new-password" id="regPassModal" minlength="6" required="" type="password"/>
           </label>
-
-          <button class="auth-modal__submit" type="submit">Создать аккаунт</button>
-          <p class="auth-modal__msg" id="regMsgModal" aria-live="polite"></p>
+          <button class="auth-modal__submit" data-cms-text="home.authModal.buttons.create" type="submit">
+            Создать аккаунт
+          </button>
+          <p aria-live="polite" class="auth-modal__msg" id="regMsgModal">
+          </p>
         </form>
-
-        <form class="auth-modal__form" id="loginFormModal" data-pane="login">
-          <label class="auth-modal__label">
-            <span>Почта</span>
-            <input id="logEmailModal" type="email" autocomplete="email" required />
+        <form class="auth-modal__form" data-pane="login" id="loginFormModal">
+          <label class="auth-modal__label" data-cms-text="home.authModal.labels.email">
+            <span>
+              Почта
+            </span>
+            <input autocomplete="email" id="logEmailModal" required="" type="email"/>
           </label>
-
-          <label class="auth-modal__label">
-            <span>Пароль</span>
-            <input id="logPassModal" type="password" autocomplete="current-password" required />
+          <label class="auth-modal__label" data-cms-text="home.authModal.labels.password">
+            <span>
+              Пароль
+            </span>
+            <input autocomplete="current-password" id="logPassModal" required="" type="password"/>
           </label>
-
-          <button class="auth-modal__submit" type="submit">Войти</button>
-
-          <button class="auth-modal__link" id="resetBtnModal" type="button">Забыли пароль?</button>
-          <p class="auth-modal__msg" id="logMsgModal" aria-live="polite"></p>
+          <button class="auth-modal__submit" data-cms-text="home.authModal.buttons.login" type="submit">
+            Войти
+          </button>
+          <button class="auth-modal__link" id="resetBtnModal" type="button">
+            Забыли пароль?
+          </button>
+          <p aria-live="polite" class="auth-modal__msg" id="logMsgModal">
+          </p>
         </form>
       </div>
     </div>
-
-    <script src="js/main.js" defer></script>
-    <script type="module" src="js/auth.js"></script>
+    <script src="js/utils.js">
+    </script>
+    <script src="js/cms.js">
+    </script>
+    <script defer="" src="js/main.js">
+    </script>
+    <script src="js/auth.js" type="module">
+    </script>
   </body>
 </html>

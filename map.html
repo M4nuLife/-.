@@ -1,197 +1,214 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>manulife — карта</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-
-    <link rel="icon" type="image/png" href="img/manul_logo_head_fixed.png" />
-    <link rel="stylesheet" href="css/style.css" />
-
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    />
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>
+      manulife — карта
+    </title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@600;700;800;900&amp;display=swap" rel="stylesheet"/>
+    <link href="img/manul_logo_head_fixed.png" rel="icon" type="image/png"/>
+    <link href="css/style.css" rel="stylesheet"/>
+    <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
   </head>
-
   <body>
     <header class="header" id="header">
-      <a class="header__logo" href="index.html#intro" aria-label="На главную">
-        <img
-          class="header__logo-img"
-          src="img/manul_logo_head_fixed.png"
-          alt="manulife"
-          loading="lazy"
-        />
+      <a aria-label="На главную" class="header__logo" href="index.html#intro">
+        <img alt="manulife" class="header__logo-img" loading="lazy" src="img/manul_logo_head_fixed.png"/>
       </a>
-
-      <nav class="nav" id="mainNav" aria-label="Навигация">
+      <nav aria-label="Навигация" class="nav" id="mainNav">
         <ul class="nav__list">
           <li class="nav__item">
-            <a class="nav__link" href="index.html#intro">Знакомство</a>
+            <a class="nav__link" href="index.html#intro">
+              Знакомство
+            </a>
           </li>
           <li class="nav__item">
-            <a class="nav__link" href="index.html#appearance">Внешность</a>
+            <a class="nav__link" href="index.html#appearance">
+              Внешность
+            </a>
           </li>
           <li class="nav__item">
-            <a class="nav__link" href="index.html#conservation">Охрана</a>
+            <a class="nav__link" href="index.html#conservation">
+              Охрана
+            </a>
           </li>
           <li class="nav__item">
-            <a class="nav__link" href="map.html">Карта</a>
+            <a class="nav__link" href="map.html">
+              Карта
+            </a>
           </li>
         </ul>
       </nav>
-
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-label="Открыть меню"
-        aria-expanded="false"
-        aria-controls="mainNav"
-      >
+      <button aria-controls="mainNav" aria-expanded="false" aria-label="Открыть меню" class="nav-toggle" type="button">
         ☰
       </button>
     </header>
-
     <main class="map-page">
       <section class="map-section">
-        <div class="container">
-          <header class="map-head">
-            <h1 class="map-title">Карта манулов</h1>
-            <p class="map-subtitle">
+        <div class="map-stage" id="mapStage">
+          <div class="map-ui" id="mapUi">
+            <div class="container map-ui__inner" id="mapUiInner">
+              <header class="map-head">
+            <h1 class="map-title" data-cms-text="map.title">
+              Карта манулов
+            </h1>
+            <p class="map-subtitle" data-cms-text="map.subtitle">
               Учебная карта распространения манула: ареал, заповедники и зоопарки.
-              Нажмите на метку, чтобы увидеть информацию.
+                            Нажмите на метку, чтобы увидеть информацию.
             </p>
-          </header>
-
-          <div class="map-panel">
+              </header>
+              <div class="map-panel">
             <button class="chip is-active" data-layer="range" type="button">
-              Ареал
+              <span class="chip__label" data-cms-text="map.filters.range">
+                Ареал
+              </span>
             </button>
-            <button
-              class="chip is-active"
-              data-layer="reserves"
-              type="button"
-            >
-              Заповедники
-              <span class="chip__count" id="countReserves">0</span>
+            <button class="chip is-active" data-layer="reserves" type="button">
+              <span class="chip__label" data-cms-text="map.filters.reserves">
+                Заповедники
+              </span>
+              <span class="chip__count" id="countReserves">
+                0
+              </span>
             </button>
-            <button
-              class="chip is-active"
-              data-layer="zoos"
-              type="button"
-            >
-              Зоопарки
-              <span class="chip__count" id="countZoos">0</span>
+            <button class="chip is-active" data-layer="zoos" type="button">
+              <span class="chip__label" data-cms-text="map.filters.zoos">
+                Зоопарки
+              </span>
+              <span class="chip__count" id="countZoos">
+                0
+              </span>
             </button>
-
-            <button
-              class="chip chip--action"
-              id="fitAll"
-              type="button"
-            >
+            <button class="chip chip--action" data-cms-text="map.showAll" id="fitAll" type="button">
               Показать всё
             </button>
-          </div>
-
-          <div class="map-search">
-            <label
-              class="map-search__label"
-              for="mapSearchInput"
-            >
+            <button class="chip chip--action chip--fs" data-cms-text="map.fullscreen" id="mapFullscreen" type="button">
+              ⛶ Экран
+            </button>
+                        <div class="map-theme" id="mapThemeWrap">
+              <button class="chip chip--action chip--theme" id="mapThemeBtn" type="button" aria-haspopup="true" aria-expanded="false">
+                Карта: Тёмная
+              </button>
+              <div class="map-theme__menu" id="mapThemeMenu" hidden>
+                <button type="button" class="map-theme__item" data-theme="dark">Тёмная</button>
+                <button type="button" class="map-theme__item" data-theme="light">Светлая</button>
+                <button type="button" class="map-theme__item" data-theme="relief">Рельеф</button>
+              </div>
+            </div>
+            <button class="chip chip--action chip--panel" id="mapPanelToggle" type="button">
+              ☰ Панель
+            </button>
+              </div>
+              <div class="map-search" id="mapSearch">
+            <div class="map-search__head">
+              <label class="map-search__label" data-cms-text="map.searchLabel" for="mapSearchInput">
               Поиск по объектам
             </label>
-
+              <button class="map-search__toggle" id="mapSearchToggle" type="button" aria-label="Свернуть поиск"></button>
+            </div>
             <div class="map-search__row">
-              <input
-                class="map-search__input"
-                id="mapSearchInput"
-                type="text"
-                placeholder="Начните вводить: Москва, Даурский, Praha…"
-                autocomplete="off"
-              />
-
-              <button
-                class="map-search__clear"
-                id="mapSearchClear"
-                type="button"
-                aria-label="Очистить поиск"
-              >
+              <input autocomplete="off" class="map-search__input" data-cms-placeholder="map.searchPlaceholder" id="mapSearchInput" placeholder="Начните вводить: Москва, Даурский, Praha…" type="text"/>
+              <button aria-label="Очистить поиск" class="map-search__clear" id="mapSearchClear" type="button">
                 ×
               </button>
             </div>
-
             <div class="map-search__hint" id="mapSearchHint">
-              В списке: <span id="mapSearchTotal">0</span> объектов
+              <span class="map-search__hint-title" data-cms-text="map.listIn">
+                В списке:
+              </span>
+              <span id="mapSearchTotal">
+                0
+              </span>
+              <span class="map-search__hint-subtitle" data-cms-text="map.objects">
+                объектов
+              </span>
             </div>
+            <div aria-label="Результаты поиска" class="map-search__list" id="mapSearchList" role="listbox">
+            </div>
+              </div>
+            </div>
+          </div>
 
-            <div
-              class="map-search__list"
-              id="mapSearchList"
-              role="listbox"
-              aria-label="Результаты поиска"
-            ></div>
+          <button class="map-panel-restore" id="mapPanelRestore" type="button" aria-label="Показать панель">☰</button>
+
+          <div class="map-root" id="mapRoot" aria-label="Карта манулов">
+            <div id="map"></div>
           </div>
         </div>
-
-        <div id="map" aria-label="Карта манулов"></div>
       </section>
     </main>
-
     <footer class="footer">
       <div class="container footer__inner">
         <div class="footer__col">
           <div class="footer__brand">
-            <img
-              class="footer__logo"
-              src="img/manul_logo_head_fixed.png"
-              alt="manulife"
-              loading="lazy"
-            />
+            <img alt="manulife" class="footer__logo" loading="lazy" src="img/manul_logo_head_fixed.png"/>
             <div>
-              <strong class="footer__name">manulife</strong>
-              <span class="footer__tag">Про манула коротко и красиво</span>
+              <strong class="footer__name">
+                manulife
+              </strong>
+              <span class="footer__tag">
+                Про манула коротко и красиво
+              </span>
             </div>
           </div>
-
           <p class="footer__desc">
             Учебный проект о самом пушистом и суровом коте планеты.
           </p>
         </div>
-
         <div class="footer__col">
-          <h4 class="footer__title">Разделы</h4>
+          <h4 class="footer__title">
+            Разделы
+          </h4>
           <ul class="footer__links">
-            <li><a href="index.html#intro">Знакомство</a></li>
-            <li><a href="index.html#appearance">Внешность</a></li>
-            <li><a href="index.html#conservation">Охрана</a></li>
-            <li><a href="map.html">Карта</a></li>
+            <li>
+              <a href="index.html#intro">
+                Знакомство
+              </a>
+            </li>
+            <li>
+              <a href="index.html#appearance">
+                Внешность
+              </a>
+            </li>
+            <li>
+              <a href="index.html#conservation">
+                Охрана
+              </a>
+            </li>
+            <li>
+              <a href="map.html">
+                Карта
+              </a>
+            </li>
           </ul>
-
           <button class="footer__top" type="button">
             ↑ Наверх
           </button>
         </div>
       </div>
-
       <div class="footer__bottom">
         <div class="container footer__bottom-inner">
-          <small>© manulife</small>
-          <small>Учебный проект</small>
+          <small>
+            © manulife
+          </small>
+          <small>
+            Учебный проект
+          </small>
         </div>
       </div>
     </footer>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <script src="js/map.js"></script>
-    <script src="js/main.js" defer></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+    <script src="js/utils.js">
+    </script>
+    <script src="js/cms.js">
+    </script>
+    <script src="js/map.js">
+    </script>
+    <script defer="" src="js/main.js">
+    </script>
   </body>
 </html>
