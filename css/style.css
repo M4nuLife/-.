@@ -834,6 +834,123 @@ section {
   padding: 10px 40px 24px;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  cursor: grab;
+}
+
+.photo-strip__track.is-dragging {
+  cursor: grabbing;
+}
+
+.photo-strip__item {
+  cursor: pointer;
+}
+
+/* ===== Photo lightbox ===== */
+
+.is-modal-open {
+  overflow: hidden;
+}
+
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+}
+
+.photo-lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(6px);
+}
+
+.photo-lightbox__dialog {
+  position: absolute;
+  inset: 20px;
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;
+  align-items: center;
+  gap: 14px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.photo-lightbox__figure {
+  margin: 0;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.photo-lightbox__img {
+  max-width: min(1100px, 86vw);
+  max-height: 76vh;
+  border-radius: var(--r-2xl);
+  border: 1px solid rgba(243, 156, 18, 0.25);
+  background: rgba(0, 0, 0, 0.35);
+  box-shadow: 0 22px 70px rgba(0,0,0,0.65);
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.photo-lightbox__caption {
+  font-size: 13px;
+  opacity: 0.85;
+  text-align: center;
+}
+
+.photo-lightbox__close {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.photo-lightbox__close:hover {
+  border-color: rgba(243,156,18,0.35);
+  background: rgba(243,156,18,0.16);
+}
+
+.photo-lightbox__nav {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.photo-lightbox__nav:hover {
+  border-color: rgba(243,156,18,0.35);
+  background: rgba(243,156,18,0.16);
+}
+
+@media (max-width: 680px) {
+  .photo-lightbox__dialog {
+    inset: 12px;
+    grid-template-columns: 44px 1fr 44px;
+  }
+
+  .photo-lightbox__nav {
+    width: 44px;
+    height: 44px;
+    font-size: 26px;
+  }
+
+  .photo-lightbox__img {
+    max-height: 68vh;
+  }
 }
 
 .photo-strip__track::-webkit-scrollbar {
@@ -1621,31 +1738,6 @@ body.is-modal-open {
 .leaflet-control-zoom a:hover {
   background: rgba(243, 156, 18, 0.25);
   color: #fff;
-}
-
-/* Fullscreen icon button right on the map */
-.map-fs-control{
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-}
-
-.map-fs-control:hover{
-  background: rgba(243, 156, 18, 0.25);
-}
-
-.map-fs-control:focus-visible{
-  outline: 2px solid rgba(243, 156, 18, 0.8);
-  outline-offset: 2px;
 }
 
 .leaflet-popup-content-wrapper {
@@ -2529,9 +2621,16 @@ body.is-map-fs {
   display: none;
 }
 
+/* When UI panel is hidden, give more space to the map on the page */
+.map-stage.is-ui-hidden .map-root {
+  height: 720px;
+}
+
 /* Responsive tweaks */
 @media (max-width: 1024px) {
   .map-root { height: 520px; }
+
+  .map-stage.is-ui-hidden .map-root { height: 620px; }
 
   .map-stage.is-fs .map-ui__inner {
     top: 12px;
@@ -2547,6 +2646,8 @@ body.is-map-fs {
 
 @media (max-width: 640px) {
   .map-root { height: 460px; }
+
+  .map-stage.is-ui-hidden .map-root { height: 560px; }
 
   .map-stage.is-fs .map-subtitle {
     display: none;
@@ -2569,12 +2670,57 @@ body.is-map-fs {
   }
 }
 
+/* ===== Map controls ===== */
 
-/* ===== Map: mobile controls order ===== */
-@media (max-width: 640px) {
-  #mapPanelToggle { order: 90; width: 100%; justify-content: center; }
-  #mapThemeWrap { order: 100; width: 100%; }
+.leaflet-container {
+  background: #0b0b0b;
+}
 
-  #mapThemeBtn { width: 100%; justify-content: center; }
-  .map-theme__menu { right: auto; left: 0; width: 100%; }
+.leaflet-container img.leaflet-tile {
+  outline: none;
+  border: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Overlap tiles slightly to kill 1px seams (common WebKit/HiDPI issue) */
+.leaflet-tile {
+  margin: -1px !important;
+}
+
+/* Remove attribution box (grey text zone at the edges) */
+.leaflet-control-attribution {
+  display: none !important;
+}
+
+/* reduce visible seams between tiles */
+.leaflet-tile-container {
+  will-change: transform;
+}
+
+.manul-mapctl {
+  margin: 10px;
+}
+
+.manul-mapctl__btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(243, 156, 18, 0.55);
+  background: rgba(15, 15, 15, 0.85);
+  color: #f39c12;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
+}
+
+.manul-mapctl__btn:hover {
+  background: rgba(25, 25, 25, 0.92);
+  border-color: rgba(243, 156, 18, 0.85);
+}
+
+.manul-mapctl__btn.is-active {
+  background: rgba(243, 156, 18, 0.18);
+  border-color: rgba(243, 156, 18, 0.95);
 }
