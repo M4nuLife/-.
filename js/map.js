@@ -30,8 +30,14 @@
   const CONFIG = {
     center: [49.5, 95],
     zoom: 4,
+    minZoom: 3,
     maxZoom: 19
   };
+
+  const WORLD_BOUNDS = L.latLngBounds(
+    L.latLng(-85, -180),
+    L.latLng(85, 180)
+  );
 
   const TILESETS = {
     dark: {
@@ -99,7 +105,12 @@
   function initLeafletMap() {
     const map = L.map('map', {
       zoomControl: true,
-      attributionControl: true
+      attributionControl: true,
+      minZoom: CONFIG.minZoom,
+      maxZoom: CONFIG.maxZoom,
+      worldCopyJump: true,
+      maxBounds: WORLD_BOUNDS,
+      maxBoundsViscosity: 1.0
     }).setView(CONFIG.center, CONFIG.zoom);
 
     if (map.attributionControl) map.attributionControl.setPrefix(false);
@@ -401,7 +412,11 @@
       if (baseLayer) map.removeLayer(baseLayer);
 
       const t = TILESETS[theme];
-      baseLayer = L.tileLayer(t.url, { maxZoom: t.maxZoom, attribution: t.attribution });
+      baseLayer = L.tileLayer(t.url, {
+        maxZoom: t.maxZoom,
+        attribution: t.attribution,
+        noWrap: true
+      });
       baseLayer.addTo(map);
       setThemeUi();
     };
@@ -519,12 +534,16 @@
     const setFsState = (on) => {
       stage.classList.toggle('is-fs', on);
       document.body.classList.toggle('is-map-fs', on);
+      fsCtrlBtn?.classList.toggle('is-active', on);
       window.setTimeout(() => map.invalidateSize(), 140);
     };
 
     const inNativeFs = () => document.fullscreenElement === root;
 
-    const toggleFullscreen = async () => {
+    const toggleFullscreen = async (e) => {
+      e?.preventDefault?.();
+      e?.stopPropagation?.();
+
       if (document.fullscreenEnabled) {
         try {
           if (document.fullscreenElement) {
@@ -534,41 +553,36 @@
           }
           return;
         } catch (_) {
+          // fall back to css fullscreen
         }
       }
 
       setFsState(!stage.classList.contains('is-fs'));
     };
 
-    fsBtn?.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleFullscreen();
-    });
-
+    // Map control (top-right). Fullscreen button lives on the map, not in the panel.
+    let fsCtrlBtn = null;
     const FsControl = L.Control.extend({
       options: { position: 'topright' },
       onAdd() {
-        const btn = L.DomUtil.create('button', 'map-fs-control');
+        const wrap = L.DomUtil.create('div', 'leaflet-control manul-mapctl');
+        const btn = L.DomUtil.create('button', 'manul-mapctl__btn', wrap);
         btn.type = 'button';
-        btn.title = 'Полный экран';
-        btn.setAttribute('aria-label', 'Полный экран');
+        btn.title = 'Экран';
+        btn.setAttribute('aria-label', 'Полноэкранный режим');
         btn.innerHTML = '⛶';
+        fsCtrlBtn = btn;
 
-        L.DomEvent.disableClickPropagation(btn);
-        L.DomEvent.on(btn, 'click', (ev) => {
-          L.DomEvent.stop(ev);
-          toggleFullscreen();
-        });
-
-        return btn;
+        L.DomEvent.disableClickPropagation(wrap);
+        L.DomEvent.on(btn, 'click', toggleFullscreen);
+        return wrap;
       }
     });
 
-    try {
-      new FsControl().addTo(map);
-    } catch (_) {
-    }
+    map.addControl(new FsControl());
+
+    // (Optional) if a panel fullscreen button exists, keep it working too
+    fsBtn?.addEventListener('click', toggleFullscreen);
 
     document.addEventListener('fullscreenchange', () => {
       if (document.fullscreenElement && document.fullscreenElement !== root) return;

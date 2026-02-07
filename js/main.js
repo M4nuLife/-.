@@ -390,6 +390,163 @@
     raf = requestAnimationFrame(step);
   }
 
+  /* ===== Photo Strip: drag + lightbox ===== */
+
+  function initPhotoStripGallery() {
+    const track = $('.photo-strip__track');
+    if (!track) return;
+
+    const images = $$('.photo-strip__item img', track);
+    if (!images.length) return;
+
+    // Drag-to-scroll (mouse/touch)
+    let isDown = false;
+    let startX = 0;
+    let startScroll = 0;
+    let moved = false;
+    let ignoreClick = false;
+
+    const onDown = (e) => {
+      if (e.button !== undefined && e.button !== 0) return;
+      isDown = true;
+      moved = false;
+      startX = e.clientX;
+      startScroll = track.scrollLeft;
+      track.setPointerCapture?.(e.pointerId);
+      track.classList.add('is-dragging');
+    };
+
+    const onMove = (e) => {
+      if (!isDown) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 5) moved = true;
+      track.scrollLeft = startScroll - dx;
+      e.preventDefault();
+    };
+
+    const onUp = (e) => {
+      if (!isDown) return;
+      isDown = false;
+      track.releasePointerCapture?.(e.pointerId);
+      track.classList.remove('is-dragging');
+
+      if (moved) {
+        ignoreClick = true;
+        setTimeout(() => {
+          ignoreClick = false;
+        }, 120);
+      }
+    };
+
+    track.addEventListener('pointerdown', onDown);
+    track.addEventListener('pointermove', onMove);
+    track.addEventListener('pointerup', onUp);
+    track.addEventListener('pointercancel', onUp);
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'photo-lightbox';
+    lightbox.hidden = true;
+    lightbox.innerHTML = `
+      <div class="photo-lightbox__backdrop" data-action="close"></div>
+      <div class="photo-lightbox__dialog" role="dialog" aria-modal="true" aria-label="Просмотр фото">
+        <button class="photo-lightbox__close" type="button" aria-label="Закрыть" data-action="close">×</button>
+        <button class="photo-lightbox__nav photo-lightbox__nav--prev" type="button" aria-label="Предыдущее" data-action="prev">‹</button>
+        <figure class="photo-lightbox__figure">
+          <img class="photo-lightbox__img" alt="" draggable="false" />
+          <figcaption class="photo-lightbox__caption"></figcaption>
+        </figure>
+        <button class="photo-lightbox__nav photo-lightbox__nav--next" type="button" aria-label="Следующее" data-action="next">›</button>
+      </div>
+    `;
+    document.body.appendChild(lightbox);
+
+    const imgEl = $('.photo-lightbox__img', lightbox);
+    const captionEl = $('.photo-lightbox__caption', lightbox);
+
+    let index = 0;
+    let lastActive = null;
+
+    const setBodyLock = (lock) => {
+      document.documentElement.classList.toggle('is-modal-open', lock);
+    };
+
+    const show = (i) => {
+      index = (i + images.length) % images.length;
+      const src = images[index].getAttribute('src');
+      const alt = images[index].getAttribute('alt') || '';
+      imgEl.src = src;
+      imgEl.alt = alt;
+      captionEl.textContent = alt;
+    };
+
+    const open = (i) => {
+      lastActive = document.activeElement;
+      lightbox.hidden = false;
+      setBodyLock(true);
+      show(i);
+      $('.photo-lightbox__close', lightbox)?.focus();
+    };
+
+    const close = () => {
+      lightbox.hidden = true;
+      setBodyLock(false);
+      imgEl.removeAttribute('src');
+      captionEl.textContent = '';
+      if (lastActive && lastActive.focus) lastActive.focus();
+    };
+
+    const prev = () => show(index - 1);
+    const next = () => show(index + 1);
+
+    lightbox.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      const act = btn.getAttribute('data-action');
+      if (act === 'close') close();
+      if (act === 'prev') prev();
+      if (act === 'next') next();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.hidden) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+    });
+
+    // Swipe/drag inside modal to switch
+    let swipeDown = false;
+    let swipeStartX = 0;
+
+    const swipeStart = (e) => {
+      swipeDown = true;
+      swipeStartX = e.clientX;
+      imgEl.setPointerCapture?.(e.pointerId);
+    };
+
+    const swipeEnd = (e) => {
+      if (!swipeDown) return;
+      swipeDown = false;
+      imgEl.releasePointerCapture?.(e.pointerId);
+      const dx = e.clientX - swipeStartX;
+      if (Math.abs(dx) < 50) return;
+      dx > 0 ? prev() : next();
+    };
+
+    imgEl.addEventListener('pointerdown', swipeStart);
+    imgEl.addEventListener('pointerup', swipeEnd);
+    imgEl.addEventListener('pointercancel', swipeEnd);
+
+    images.forEach((img, i) => {
+      img.addEventListener('click', (e) => {
+        if (ignoreClick) return;
+        e.preventDefault();
+        open(i);
+      });
+    });
+  }
+
   /* ===== Init ===== */
 
   async function initApp() {
@@ -407,6 +564,7 @@
       initFooter();
       initQuiz();
       initPhotoStripAutoScroll();
+      initPhotoStripGallery();
     } catch (e) {
       console.error(e);
     }
