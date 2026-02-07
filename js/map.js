@@ -105,12 +105,17 @@
   function initLeafletMap() {
     const map = L.map('map', {
       zoomControl: true,
-      attributionControl: true,
+      attributionControl: false,
       minZoom: CONFIG.minZoom,
       maxZoom: CONFIG.maxZoom,
-      worldCopyJump: true,
+      worldCopyJump: false,
       maxBounds: WORLD_BOUNDS,
-      maxBoundsViscosity: 1.0
+      maxBoundsViscosity: 1.0,
+      zoomSnap: 1,
+      zoomDelta: 1,
+      zoomAnimation: false,
+      fadeAnimation: false,
+      markerZoomAnimation: false
     }).setView(CONFIG.center, CONFIG.zoom);
 
     if (map.attributionControl) map.attributionControl.setPrefix(false);
