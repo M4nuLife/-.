@@ -2724,3 +2724,48 @@ body.is-map-fs {
   background: rgba(243, 156, 18, 0.18);
   border-color: rgba(243, 156, 18, 0.95);
 }
+
+
+/* ===== Map: mobile UI polish ===== */
+@media (max-width: 640px) {
+  .map-section { padding-top: 28px; }
+  .map-root { margin-top: 12px; height: 420px; border-radius: 18px; }
+
+  /* Make panel readable (not transparent over the map) */
+  #mapUiInner {
+    background: rgba(14, 14, 14, 0.92);
+    border: 1px solid rgba(243, 156, 18, 0.14);
+    border-radius: 18px;
+    padding: 14px;
+    backdrop-filter: blur(10px);
+  }
+
+  .map-title { font-size: 34px; margin-bottom: 8px; }
+  .map-subtitle { font-size: 14px; line-height: 1.45; }
+
+  .map-panel { gap: 8px; margin-bottom: 12px; }
+
+  /* Put panel toggle above theme (your last request) */
+  #mapPanelToggle { order: 8; width: 100%; justify-content: center; }
+  #mapThemeWrap { order: 9; width: 100%; }
+  #mapThemeBtn { width: 100%; justify-content: flex-start; }
+
+  /* Search header a bit tighter */
+  .map-search__head { gap: 10px; }
+  .map-search__head .map-search__toggle { width: 42px; height: 42px; }
+
+  /* Legend smaller so it doesn't cover half the map */
+  .leaflet-control.map-legend {
+    max-width: 210px;
+    padding: 10px 10px;
+    font-size: 12px;
+  }
+  .map-legend__hint { display: none; }
+}
+
+/* When UI hidden on small screens - let map take almost full viewport */
+@media (max-width: 640px) {
+  .map-stage.is-ui-hidden .map-root {
+    height: calc(100vh - var(--header-h) - 22px);
+  }
+}
