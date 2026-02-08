@@ -27,11 +27,13 @@
       };
     });
 
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
   const CONFIG = {
     center: [49.5, 95],
     zoom: 4,
     minZoom: 3,
-    maxZoom: 19
+    maxZoom: isMobile ? 15 : 19
   };
 
   const WORLD_BOUNDS = L.latLngBounds(
@@ -57,9 +59,9 @@
     relief: {
       id: 'relief',
       label: 'Рельеф',
-      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
-      maxZoom: 19,
-      attribution: 'Tiles &copy; Esri'
+      url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+      maxZoom: 17,
+      attribution: '&copy; OpenStreetMap contributors, SRTM | &copy; OpenTopoMap'
     }
   };
 
@@ -420,7 +422,12 @@
       baseLayer = L.tileLayer(t.url, {
         maxZoom: t.maxZoom,
         attribution: t.attribution,
-        noWrap: true
+        noWrap: true,
+        keepBuffer: 2,
+        updateWhenZooming: false,
+        updateWhenIdle: true,
+        detectRetina: true,
+        crossOrigin: true
       });
       baseLayer.addTo(map);
       setThemeUi();
