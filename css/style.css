@@ -2776,3 +2776,52 @@ body.is-map-fs {
   body.is-map-fs #mapUi { display: none !important; }
   body.is-map-fs #mapPanelRestore { display: none !important; }
 }
+
+
+/* ===== Map polish ===== */
+
+.leaflet-pane,
+.leaflet-tile-pane,
+.leaflet-map-pane {
+  transform: translateZ(0);
+}
+
+.leaflet-tile {
+  outline: 1px solid transparent;
+}
+
+/* A bit softer, more "premium" UI */
+.map-ui__inner {
+  border: 1px solid rgba(243, 156, 18, 0.18);
+  background: linear-gradient(180deg, rgba(12, 12, 12, 0.92), rgba(8, 8, 8, 0.78));
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+}
+
+.map-legend {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.map-theme__btn,
+.manul-mapctl__btn {
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.map-theme__btn:active,
+.manul-mapctl__btn:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+  .map-ui__inner {
+    border-radius: 22px;
+    padding: 14px;
+  }
+
+  .map-legend {
+    max-width: 220px;
+    font-size: 13px;
+  }
+}
