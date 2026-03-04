@@ -47,8 +47,6 @@
       const val = getByPath(data, key);
       if (val === undefined || val === null) return;
 
-      // Don't wipe nested controls (e.g., label + input). In such cases
-      // the text should update only the visual caption (usually a <span>).
       if (el.querySelector('input, textarea, select')) {
         const caption = el.querySelector('span');
         if (caption) caption.textContent = String(val);

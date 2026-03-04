@@ -42,33 +42,31 @@
   );
 
   const TILESETS = {
-    dark: {
-      id: 'dark',
-      label: 'Тёмная',
-      url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
-    },
-    light: {
-      id: 'light',
-      label: 'Светлая',
-      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors'
-    },
-    relief: {
-      id: 'relief',
-      label: 'Рельеф',
-      url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-      maxZoom: 17,
-      attribution: '&copy; OpenStreetMap contributors, SRTM | &copy; OpenTopoMap'
-    }
-  };
+  dark: {
+    id: 'dark',
+    label: 'Тёмная',
+    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+  },
+  light: {
+    id: 'light',
+    label: 'Светлая',
+    url: 'https://api.maptiler.com/maps/outdoor-v4/256/{z}/{x}/{y}{r}.png?key=w9ymgzjQA4IriMpWOdi6',
+    maxZoom: 20,
+    attribution: '© OpenStreetMap contributors © MapTiler'
+  },
+  relief: {
+    id: 'relief',
+    label: 'Рельеф',
+    url: 'https://api.maptiler.com/maps/hybrid-v4/256/{z}/{x}/{y}{r}.webp?key=w9ymgzjQA4IriMpWOdi6',
+    maxZoom: 20,
+    attribution: '© OpenStreetMap contributors © MapTiler'
+  }
+};
 
   const STORAGE = {
-    theme: 'manul_map_theme',
-    searchCollapsed: 'manul_map_search_collapsed',
-    uiHidden: 'manul_map_ui_hidden'
+    theme: 'manul_map_theme'
   };
 
   const ids = {
@@ -81,14 +79,9 @@
     searchList: 'mapSearchList',
     searchClear: 'mapSearchClear',
     searchTotal: 'mapSearchTotal',
-    fullscreen: 'mapFullscreen',
     themeBtn: 'mapThemeBtn',
-    themeMenu: 'mapThemeMenu',
-    panelToggle: 'mapPanelToggle',
-    panelRestore: 'mapPanelRestore',
-    searchToggle: 'mapSearchToggle'
+    themeMenu: 'mapThemeMenu'
   };
-
   const byId = (id) => document.getElementById(id);
 
   async function loadJSON(relPath) {
@@ -107,22 +100,24 @@
   function initLeafletMap() {
     const map = L.map('map', {
       zoomControl: true,
+  zoomAnimationThreshold: 4,
+  wheelPxPerZoomLevel: 120,
+  wheelDebounceTime: 20,
       attributionControl: false,
       minZoom: CONFIG.minZoom,
       maxZoom: CONFIG.maxZoom,
       worldCopyJump: false,
       maxBounds: WORLD_BOUNDS,
       maxBoundsViscosity: 1.0,
-      zoomSnap: 1,
-      zoomDelta: 1,
-      zoomAnimation: false,
-      fadeAnimation: false,
-      markerZoomAnimation: false
+      zoomSnap: 0.5,
+      zoomDelta: 0.5,
+      zoomAnimation: true,
+      fadeAnimation: true,
+      markerZoomAnimation: true
     }).setView(CONFIG.center, CONFIG.zoom);
 
     if (map.attributionControl) map.attributionControl.setPrefix(false);
 
-    // avoid accidental page zoom/scroll fighting the map
     map.scrollWheelZoom.disable();
     map.doubleClickZoom.disable();
     const el = map.getContainer();
@@ -176,7 +171,6 @@
 
   function renderRangePolygons(range, layer) {
     (range?.polygons || []).forEach((p) => {
-      // Soft glow underlay
       L.polygon(p.coords, {
         color: '#f39c12',
         weight: 12,
@@ -185,7 +179,6 @@
         fillOpacity: 0.10
       }).addTo(layer);
 
-      // Crisp dashed outline
       L.polygon(p.coords, {
         color: '#f39c12',
         weight: 2,
@@ -380,14 +373,10 @@
     const root = byId(ids.root);
     if (!stage || !root) return;
 
-    const fsBtn = byId(ids.fullscreen);
     const themeBtn = byId(ids.themeBtn);
     const themeMenu = byId(ids.themeMenu);
     const themeWrap = document.getElementById('mapThemeWrap');
-    const panelToggleBtn = byId(ids.panelToggle);
-    const panelRestoreBtn = byId(ids.panelRestore);
     const mapSearch = document.getElementById('mapSearch');
-    const searchToggleBtn = byId(ids.searchToggle);
 
     // ===== Base layer (theme) =====
 
@@ -421,6 +410,8 @@
       const t = TILESETS[theme];
       baseLayer = L.tileLayer(t.url, {
         maxZoom: t.maxZoom,
+    tileSize: 256,
+    zoomOffset: 0,
         attribution: t.attribution,
         noWrap: true,
         keepBuffer: 2,
@@ -443,7 +434,6 @@
 
     const updateThemeMenuDirection = () => {
       if (!themeMenu || !themeWrap || themeMenu.hidden) return;
-      // default: open down
       themeWrap.classList.remove('is-dropup');
       const rect = themeMenu.getBoundingClientRect();
       const overBottom = rect.bottom > window.innerHeight - 12;
@@ -458,7 +448,6 @@
       if (themeBtn) themeBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
 
       if (willOpen) {
-        // allow layout to update before measuring
         window.requestAnimationFrame(updateThemeMenuDirection);
       } else {
         themeWrap?.classList.remove('is-dropup');
@@ -492,56 +481,14 @@
 
     setThemeUi();
 
-    // ===== Search collapse =====
-
-    const setSearchCollapsed = (on) => {
-      if (!mapSearch) return;
-      mapSearch.classList.toggle('is-collapsed', on);
-      localStorage.setItem(STORAGE.searchCollapsed, on ? '1' : '0');
-      window.setTimeout(() => map.invalidateSize(), 120);
-    };
-
-    const isSearchCollapsed = () => {
-      if (!mapSearch) return false;
-      const saved = localStorage.getItem(STORAGE.searchCollapsed);
-      return saved === '1' || mapSearch.classList.contains('is-collapsed');
-    };
-
+    // ===== Search (always expanded) =====
     if (mapSearch) {
-      const saved = localStorage.getItem(STORAGE.searchCollapsed);
-      if (saved === '1') mapSearch.classList.add('is-collapsed');
+      mapSearch.classList.remove('is-collapsed');
     }
 
-    searchToggleBtn?.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setSearchCollapsed(!isSearchCollapsed());
-    });
+    // ===== Fullscreen (Leaflet control + native Fullscreen API) =====
 
-    // ===== UI hide / restore =====
-
-    const setUiHidden = (on) => {
-      stage.classList.toggle('is-ui-hidden', on);
-      localStorage.setItem(STORAGE.uiHidden, on ? '1' : '0');
-      window.setTimeout(() => map.invalidateSize(), 80);
-    };
-
-    const savedHidden = String(localStorage.getItem(STORAGE.uiHidden) || '') === '1';
-    if (savedHidden) setUiHidden(true);
-
-    panelToggleBtn?.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setUiHidden(!stage.classList.contains('is-ui-hidden'));
-    });
-
-    panelRestoreBtn?.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setUiHidden(false);
-    });
-
-    // ===== Fullscreen =====
+    let fsCtrlBtn = null;
 
     const setFsState = (on) => {
       stage.classList.toggle('is-fs', on);
@@ -556,6 +503,7 @@
       e?.preventDefault?.();
       e?.stopPropagation?.();
 
+      // Prefer native Fullscreen API when available.
       if (document.fullscreenEnabled) {
         try {
           if (document.fullscreenElement) {
@@ -565,15 +513,13 @@
           }
           return;
         } catch (_) {
-          // fall back to css fullscreen
+          // Fallback to CSS-only fullscreen below.
         }
       }
 
       setFsState(!stage.classList.contains('is-fs'));
     };
 
-    // Map control (top-right). Fullscreen button lives on the map, not in the panel.
-    let fsCtrlBtn = null;
     const FsControl = L.Control.extend({
       options: { position: 'topright' },
       onAdd() {
@@ -593,18 +539,19 @@
 
     map.addControl(new FsControl());
 
-    // (Optional) if a panel fullscreen button exists, keep it working too
-    fsBtn?.addEventListener('click', toggleFullscreen);
-
     document.addEventListener('fullscreenchange', () => {
+      // Only track fullscreen state when the map root is the fullscreen element.
       if (document.fullscreenElement && document.fullscreenElement !== root) return;
       setFsState(inNativeFs());
     });
 
     window.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape') return;
+      // If user exits native fullscreen via ESC, ensure classes reset.
       if (!document.fullscreenElement) setFsState(false);
     });
+
+
   }
 
   async function init() {

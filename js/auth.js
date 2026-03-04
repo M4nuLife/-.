@@ -93,6 +93,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   modalTabs.forEach((t) => t.addEventListener("click", () => setTab(t.dataset.tab)));
 
+
+  /* ===== Page auth tabs (auth.html) ===== */
+
+  const pageTabs = Array.from(document.querySelectorAll(".auth__tab"));
+  const pagePanes = Array.from(document.querySelectorAll(".auth__form"));
+
+  const setPageTab = (name) => {
+    if (!pageTabs.length || !pagePanes.length) return;
+    pageTabs.forEach((t) => t.classList.toggle("is-active", t.dataset.tab === name));
+    pagePanes.forEach((p) => p.classList.toggle("is-active", p.dataset.pane === name));
+    setMsg(regMsg, "");
+    setMsg(logMsg, "");
+  };
+
+  pageTabs.forEach((t) => t.addEventListener("click", () => setPageTab(t.dataset.tab)));
+
+
   /* ===== Logout ===== */
 
   const doLogout = async () => {
@@ -100,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
       await signOut(auth);
       closeModal();
     } catch (e) {
-      console.warn("[auth] signOut error:", e);
+      // ignore
     }
   };
 

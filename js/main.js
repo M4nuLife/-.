@@ -18,7 +18,9 @@
     if (!header) return null;
 
     const setScrolled = () => {
-      header.classList.toggle('header--scrolled', window.scrollY > HEADER_SCROLL_Y);
+      const scrolled = window.scrollY > HEADER_SCROLL_Y;
+      document.body.classList.toggle('is-scrolled', scrolled);
+      // keep legacy class for backwards-compatible styling
     };
 
     const setOpen = (open) => {
@@ -334,6 +336,7 @@
   /* ===== Photo Strip Auto Scroll ===== */
 
   function initPhotoStripAutoScroll() {
+    return; // disabled (lag fix)
     const track = $('.photo-strip__track');
     if (!track) return;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -399,12 +402,15 @@
     const images = $$('.photo-strip__item img', track);
     if (!images.length) return;
 
-    // Drag-to-scroll (mouse/touch)
+    images.forEach((img) => { img.draggable = false; });
+
     let isDown = false;
     let startX = 0;
     let startScroll = 0;
     let moved = false;
     let ignoreClick = false;
+    let targetScroll = 0;
+    let rafMove = 0;
 
     const onDown = (e) => {
       if (e.button !== undefined && e.button !== 0) return;
@@ -420,13 +426,20 @@
       if (!isDown) return;
       const dx = e.clientX - startX;
       if (Math.abs(dx) > 5) moved = true;
-      track.scrollLeft = startScroll - dx;
+      targetScroll = startScroll - dx;
+      if (!rafMove) {
+        rafMove = requestAnimationFrame(() => {
+          rafMove = 0;
+          track.scrollLeft = targetScroll;
+        });
+      }
       e.preventDefault();
     };
 
     const onUp = (e) => {
       if (!isDown) return;
       isDown = false;
+      if (rafMove) { cancelAnimationFrame(rafMove); rafMove = 0; }
       track.releasePointerCapture?.(e.pointerId);
       track.classList.remove('is-dragging');
 
@@ -443,7 +456,6 @@
     track.addEventListener('pointerup', onUp);
     track.addEventListener('pointercancel', onUp);
 
-    // Lightbox
     const lightbox = document.createElement('div');
     lightbox.className = 'photo-lightbox';
     lightbox.hidden = true;
@@ -515,7 +527,6 @@
       if (e.key === 'ArrowRight') next();
     });
 
-    // Swipe/drag inside modal to switch
     let swipeDown = false;
     let swipeStartX = 0;
 
@@ -551,20 +562,16 @@
 
   async function initApp() {
     try {
-      // CMS: load content from JSON (works on GitHub Pages)
       if (window.CMS) {
         const cmsData = await window.CMS.load('./data/site.json');
         window.CMS.apply(document, cmsData);
       }
 
       const headerApi = initHeaderNav();
-      initSmoothScroll(headerApi);
-      initRevealOnScroll();
-      initAppearancePanel();
+      initSmoothScroll(headerApi);      initAppearancePanel();
       initFooter();
       initQuiz();
-      initPhotoStripAutoScroll();
-      initPhotoStripGallery();
+initPhotoStripGallery();
     } catch (e) {
       console.error(e);
     }
