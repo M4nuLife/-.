@@ -1,0 +1,158 @@
+/* ===== Base ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  --shadow-pop: 0 18px 60px var(--black-45);
+  --shadow-modal: 0 18px 70px var(--black-65);
+  --shadow-card: 0 10px 26px var(--black-35);
+  --shadow-card-strong: 0 10px 26px var(--black-45);
+
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Common alpha blacks (dedup) */
+  --black-00: rgba(0, 0, 0, 0);
+  --black-18: rgba(0, 0, 0, 0.18);
+  --black-24: rgba(0, 0, 0, 0.24);
+  --black-25: rgba(0, 0, 0, 0.25);
+  --black-34: rgba(0, 0, 0, 0.34);
+  --black-35: rgba(0, 0, 0, 0.35);
+  --black-45: rgba(0, 0, 0, 0.45);
+  --black-50: rgba(0, 0, 0, 0.5);
+  --black-55: rgba(0, 0, 0, 0.55);
+  --black-65: rgba(0, 0, 0, 0.65);
+  --black-75: rgba(0, 0, 0, 0.75);
+
+  --accent: #f39c12;
+  --accent-hover: #e67e22;
+
+  --bg: #1a1a1a;
+  --dark: #141414;
+
+  --panel: var(--black-35);
+  --panel-strong: rgba(0, 0, 0, 0.46);
+
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.78);
+
+  --stroke: rgba(255, 255, 255, 0.14);
+  --stroke-soft: rgba(255, 255, 255, 0.10);
+  --stroke-accent: rgba(243, 156, 18, 0.22);
+
+  /* Layout */
+  --container: 1100px; /* (single source of truth; 1200px legacy removed) */
+  --page-pad: clamp(16px, 4vw, 24px);
+
+  /* Radii */
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 16px;
+  --r-xl: 18px;
+  --r-2xl: 20px;
+  --r-pill: 999px;
+  --r-xs: 12px;
+  --r-3xl: 26px;
+
+  --t-fast: 0.2s ease;
+  --t-med: 0.25s ease;
+
+  --header-h: 70px;
+  --header-h-sm: 64px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-inline: var(--page-pad);
+}
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Montserrat", sans-serif;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(243, 156, 18, 0.35);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    font-size: 16px;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ===== Layout ===== */
+
+section {
+  min-height: auto;
+  padding: 100px 20px;
+  position: relative;
+  scroll-margin-top: calc(var(--header-h) + 20px);
+}
+
+/* === Layout primitives === */
+.section{
+  padding: 96px 0;
+}
+.section--tight{ padding: 64px 0; }
+.section--hero{ padding: 120px 0; }
+
+/* Offset content under fixed header (all pages except map) */
+body:not(.page-map):not(.page-home) main{
+  padding-top: var(--header-h);
+}
+body.page-home main{
+  padding-top: 0;
+}
+body.page-map main{
+  padding-top: 0;
+}
