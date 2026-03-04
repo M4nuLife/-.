@@ -12,7 +12,7 @@
     <link href="img/manul_logo_head_fixed.png" rel="icon" type="image/png"/>
     <link href="css/style.css" rel="stylesheet"/>
   </head>
-  <body>
+  <body class="page-home">
     <header class="header" id="header">
       <a aria-label="На главную" class="header__logo" href="#intro">
         <img alt="manulife" class="header__logo-img" loading="lazy" src="img/manul_logo_head_fixed.png"/>
@@ -258,9 +258,12 @@
             </p>
           </div>
           <div class="meaning__cta">
-            <a class="btn-main btn-main--outline" href="article.html">
-              Полная история манула
-            </a>
+            
+<div class="hero-buttons">
+  <a href="article.html" class="btn btn--accent">Полная история манула</a>
+  <a href="map.html" class="btn btn--accent">Карта манулов</a>
+</div>
+
           </div>
         </div>
       </section>
@@ -383,7 +386,7 @@
     <div aria-hidden="true" class="auth-modal" id="authModal">
       <div class="auth-modal__overlay" data-close="">
       </div>
-      <div aria-label="Аккаунт" aria-modal="true" class="auth-modal__dialog" role="dialog">
+      <div aria-label="Аккаунт" aria-modal="true" class="auth-modal__dialog surface surface--strong" role="dialog">
         <button aria-label="Закрыть" class="auth-modal__close" data-close="" type="button">
           ×
         </button>
@@ -455,5 +458,6 @@
     </script>
     <script src="js/auth.js" type="module">
     </script>
-  </body>
+    <script defer src="js/ribbons-bg.js"></script>
+</body>
 </html>

@@ -13,8 +13,8 @@
     <link href="css/style.css" rel="stylesheet"/>
     <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet"/>
   </head>
-  <body>
-    <header class="header" id="header">
+<body class="page-map has-ribbons-bg">
+<header class="header" id="header">
       <a aria-label="На главную" class="header__logo" href="index.html#intro">
         <img alt="manulife" class="header__logo-img" loading="lazy" src="img/manul_logo_head_fixed.png"/>
       </a>
@@ -49,7 +49,9 @@
     <main class="map-page">
       <section class="map-section">
         <div class="map-stage" id="mapStage">
-          <div class="map-ui" id="mapUi">
+          <div class="map-layout" id="mapLayout">
+  <aside class="map-sidebar surface surface--strong">
+    <div class="map-ui surface" id="mapUi">
             <div class="container map-ui__inner" id="mapUiInner">
               <header class="map-head">
             <h1 class="map-title" data-cms-text="map.title">
@@ -60,13 +62,14 @@
                             Нажмите на метку, чтобы увидеть информацию.
             </p>
               </header>
-              <div class="map-panel">
-            <button class="chip is-active" data-layer="range" type="button">
+              <div class="map-panel surface">
+  <div class="map-panel__col map-panel__col--left">
+    <button class="chip is-active" data-layer="range" type="button">
               <span class="chip__label" data-cms-text="map.filters.range">
                 Ареал
               </span>
             </button>
-            <button class="chip is-active" data-layer="reserves" type="button">
+    <button class="chip is-active" data-layer="reserves" type="button">
               <span class="chip__label" data-cms-text="map.filters.reserves">
                 Заповедники
               </span>
@@ -74,7 +77,7 @@
                 0
               </span>
             </button>
-            <button class="chip is-active" data-layer="zoos" type="button">
+    <button class="chip is-active" data-layer="zoos" type="button">
               <span class="chip__label" data-cms-text="map.filters.zoos">
                 Зоопарки
               </span>
@@ -82,11 +85,13 @@
                 0
               </span>
             </button>
-            <button class="chip chip--action" data-cms-text="map.showAll" id="fitAll" type="button">
+  </div>
+
+  <div class="map-panel__col map-panel__col--right">
+    <button class="chip chip--action" data-cms-text="map.showAll" id="fitAll" type="button">
               Показать всё
             </button>
-            <!-- fullscreen control is rendered on the map (Leaflet control) -->
-<div class="map-theme" id="mapThemeWrap">
+    <div class="map-theme" id="mapThemeWrap">
               <button class="chip chip--action chip--theme" id="mapThemeBtn" type="button" aria-haspopup="true" aria-expanded="false">
                 Карта: Тёмная
               </button>
@@ -96,17 +101,16 @@
                 <button type="button" class="map-theme__item" data-theme="relief">Рельеф</button>
               </div>
             </div>
-            <button class="chip chip--action chip--panel" id="mapPanelToggle" type="button">
-              ☰ Панель
-            </button>
-              </div>
-              <div class="map-search" id="mapSearch">
+  </div>
+</div>
+
+<div class="map-search"
+ id="mapSearch">
             <div class="map-search__head">
               <label class="map-search__label" data-cms-text="map.searchLabel" for="mapSearchInput">
               Поиск по объектам
             </label>
-              <button class="map-search__toggle" id="mapSearchToggle" type="button" aria-label="Свернуть поиск"></button>
-            </div>
+</div>
             <div class="map-search__row">
               <input autocomplete="off" class="map-search__input" data-cms-placeholder="map.searchPlaceholder" id="mapSearchInput" placeholder="Начните вводить: Москва, Даурский, Praha…" type="text"/>
               <button aria-label="Очистить поиск" class="map-search__clear" id="mapSearchClear" type="button">
@@ -129,14 +133,15 @@
               </div>
             </div>
           </div>
+  </aside>
 
-          <button class="map-panel-restore" id="mapPanelRestore" type="button" aria-label="Показать панель">☰</button>
-
-          <div class="map-root" id="mapRoot" aria-label="Карта манулов">
+  <div class="map-canvas">
+    <div class="map-root" id="mapRoot" aria-label="Карта манулов">
             <div id="map"></div>
           </div>
         </div>
-      </section>
+  </div>
+</div></section>
     </main>
     <footer class="footer">
       <div class="container footer__inner">
@@ -208,5 +213,6 @@
     </script>
     <script defer="" src="js/main.js">
     </script>
-  </body>
+    <script defer src="js/ribbons-bg.js"></script>
+</body>
 </html>
